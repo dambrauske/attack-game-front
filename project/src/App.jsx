@@ -12,7 +12,7 @@ function App() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        socket.on('images', (images) => {
+        socket().on('images', (images) => {
             console.log('Received images:', images)
             dispatch(setImages(images))
         })
@@ -20,12 +20,12 @@ function App() {
     }, [])
 
   return (
-    <>
+    <div className="bg-slate-50">
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/home' element={<Home/>}/>
       </Routes>
-    </>
+    </div>
   )
 }
 
