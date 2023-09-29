@@ -6,6 +6,7 @@ import socket from "./socket.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {setImages} from "./features/userSlice.jsx";
+import {setGeneratedItems} from "./features/itemsSlice.jsx";
 
 function App() {
 
@@ -18,14 +19,10 @@ function App() {
 
 
 
-
-        return () => {
-        }
-
     }, [])
 
     return (
-        <div className="bg-slate-50">
+        <div className="min-h-screen">
             <Routes>
                 <Route path='/' element={<Login/>}/>
                 <Route path='/home' element={<Home/>}/>

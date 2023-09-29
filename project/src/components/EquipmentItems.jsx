@@ -10,12 +10,12 @@ const EquipmentItems = () => {
 
     return (
         <div className="flex flex-col gap-4 items-center">
-            <div>
+            <div className="w-full bg-violet-800 text-center py-1 rounded text-slate-50">
                 Yor equipment for the fight
             </div>
             <div className="flex gap-10 justify-center">
-                <div className="flex flex-col gap-2 items-center bg-red-400 w-28 h-36 p-2">
-                    <div className="w-24 h-24">
+                <div className="flex flex-col gap-2 items-center justify-between bg-slate-800 text-slate-100 rounded  p-2">
+                    <div className="w-52 h-36">
                         {
                             weapon &&
                             <SingleEquipmentItem
@@ -24,11 +24,11 @@ const EquipmentItems = () => {
                         }
                     </div>
 
-                    <div className="">weapon</div>
+                    <div className="bg-slate-200 px-1 rounded text-black">weapon</div>
                 </div>
 
-                <div className="flex flex-col gap-2 items-center bg-red-400 w-28 h-36 p-2">
-                    <div className="w-24 h-24">
+                <div className="flex flex-col gap-2 items-center justify-between bg-slate-800 text-slate-100 rounded  p-2">
+                    <div className="w-48 h-28">
 
                         {
                             armour &&
@@ -38,12 +38,12 @@ const EquipmentItems = () => {
                         }
                     </div>
 
-                    <div>armour</div>
+                    <div className="bg-slate-200 px-1 rounded text-black">armour</div>
 
                 </div>
 
-                <div className="flex flex-col gap-2 items-center bg-red-400 w-28 h-36 p-2">
-                    <div className="w-24 h-24">
+                <div className="flex flex-col gap-2 items-center justify-between bg-slate-800 text-slate-100 rounded  p-2">
+                    <div className="w-48 h-28">
 
                         {
                             potion &&
@@ -53,7 +53,7 @@ const EquipmentItems = () => {
                         }
                     </div>
 
-                    <div>potion</div>
+                    <div className="bg-slate-200 px-1 rounded text-black">potion</div>
 
                 </div>
 

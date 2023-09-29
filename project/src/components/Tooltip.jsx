@@ -1,15 +1,15 @@
 import React from 'react';
 
-const Modal = ({item}) => {
+const Tooltip = ({item}) => {
     return (
         <div
 
-            className="w-28 h-min bg-slate-200 rounded border flex flex-col border-slate-700 absolute top-0 left-full text-xs p-1 z-50">
+            className="w-28 h-min bg-slate-900 text-slate-100 rounded border flex flex-col border-slate-700 absolute top-0 left-full text-xs p-1 z-50">
             <div className="uppercase tracking-wider underline mb-1">{item.name}</div>
-            <div>
+            <div className="leading-tight	">
                 {
                     item.grade &&
-                    <div>Grade: <span className="font-bold">{item.grade}</span> </div>
+                    <div>Grade: {item.grade}</div>
                 }
             </div>
             <div>
@@ -42,14 +42,8 @@ const Modal = ({item}) => {
                     <div>Generate gold: {item.generateGold}</div>
                 }
             </div>
-
-
-
-
-
-
         </div>
     );
 };
 
-export default Modal;
+export default Tooltip;

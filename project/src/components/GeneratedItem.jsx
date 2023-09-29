@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
-import Modal from "./Modal.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {getInventory, removeFromGeneratedItems} from "../features/itemsSlice.jsx";
+import {setInventory} from "../features/itemsSlice.jsx";
+import socket from "../socket.jsx";
 
 const GeneratedItem = ({item}) => {
 
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false);
+    const token = useSelector(state => state.user.token)
 
     const showModalOnHover = () => {
         setShowModal(true);
@@ -17,61 +18,56 @@ const GeneratedItem = ({item}) => {
     }
 
     const takeToInventory = (item) => {
+        console.log('take to inventory clicked')
 
-        const options = {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                "authorization": localStorage.getItem('token')
-            },
-            body: JSON.stringify({item})
-        }
+        socket().emit('addToInventory', ({token, item}))
 
-        fetch('http://localhost:8000/addToInventory', options)
-            .then(res => res.json())
-            .then(data => {
-                console.log('inventory from back when added new', data.data)
-                dispatch(removeFromGeneratedItems(item))
-                dispatch(getInventory(data.data))
-            })
+        socket().on('updatedInventory', (data) => {
+            console.log('data from sockets inventory', data)
+            dispatch(setInventory(data))
+        })
 
-        const options2 = {
-            method: "GET",
-            headers: {
-                "content-type": "application/json",
-                "authorization": localStorage.getItem('token')
-            },
-            body: null
-        }
-
-        fetch('http://localhost:8000/getInventory', options2)
-            .then(res => res.json())
-            .then(data => {
-                console.log('inventory from back', data.data)
-                dispatch(getInventory(data.data))
-            })
     }
 
     return (
         <div
             onMouseEnter={showModalOnHover}
-            onMouseLeave={hideModal}
-            className=" flex flex-col items-center justify-center gap-2 relative">
-            {
-                showModal &&
-                <Modal
-                    item={item}
-                />
-            }
+            onMouseLeave={hideModal}>
 
-            <div className="rounded h-28 w-28 bg-indigo-200 relative hover:bg-indigo-100">
-                <img className="w-full h-full object-contain" src={item.image} alt=""/>
-            </div>
-            <button
+            <div
                 onClick={() => takeToInventory(item)}
-                className="bg-green-300 px-6 absolute bottom-0 bg-opacity-70 rounded"
-            >Take
-            </button>
+                className=" flex items-center h-36 w-52 px-4 gap-3 bg-slate-800 rounded relative hover:bg-purple-900 cursor-pointer">
+                <div className="p-2 w-16 h-16">
+                    <img className="w-full h-full object-contain" src={item.image} alt=""/>
+                </div>
+                <div className="text-slate-100 capitalize items-start flex flex-col text-sm leading-tight">
+                    <div>{item.name}</div>
+                    {
+                        item.grade &&
+                        <div>Item grade {item.grade}</div>
+                    }
+                    {
+                        item.damage &&
+                        <div> + {item.damage} damage</div>
+                    }
+                    {
+                        item.generateGold &&
+                        <div> + {item.generateGold} gold</div>
+                    }
+                    {
+                        item.hp &&
+                        <div> + {item.hp} hp</div>
+                    }
+                    {
+                        item.effects && item.effects.map((effect, i) => (
+                            <div
+                            key={i}
+                            >{effect}</div>
+                        ))
+                    }
+                </div>
+            </div>
+
         </div>
     );
 };

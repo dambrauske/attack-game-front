@@ -65,7 +65,7 @@ const Login = () => {
 
     return (
         // <div className="bg-cover bg-[url('https://img.freepik.com/free-vector/abstract-blue-background-with-lines_79603-873.jpg?w=1380&t=st=1695963911~exp=1695964511~hmac=dca3656832b81772007597ab36fb86d4d1326f1fb6f8cf6db8e584e384df40ed')] h-screen flex justify-center items-center">
-        <div className="bg-cover bg-[url('https://img.freepik.com/free-vector/abstract-background_79603-31.jpg?w=1380&t=st=1695963692~exp=1695964292~hmac=733b94b4fe6bde6cb499ea7f9135eee03a2fb5f86f4fdc1e435cbeb0389b4bf4')] h-screen flex justify-center items-center">
+        <div className="bg-cover bg-[url('./assets/31.jpg')] h-screen flex justify-center items-center">
         {/*// <div className="bg-cover bg-[url('https://img.freepik.com/free-vector/abstract-background_79603-31.jpg?w=1380&t=st=1695963692~exp=1695964292~hmac=733b94b4fe6bde6cb499ea7f9135eee03a2fb5f86f4fdc1e435cbeb0389b4bf4')] h-screen flex justify-center items-center">*/}
         {/*<div className="bg-cover bg-[url('https://img.freepik.com/free-vector/shiny-diagonal-lines-blue-orange-colors_1017-27056.jpg?w=1480&t=st=1695963688~exp=1695964288~hmac=191f85242f48768bcc53aea609353ee2a7379575feb506b4a6e1f69135f6a48a')] h-screen flex justify-center items-center">*/}
             <div className="flex flex-col gap-4 bg-slate-950 p-4 pt-10 rounded-l w-6/12 items-center shadow-2xl	">

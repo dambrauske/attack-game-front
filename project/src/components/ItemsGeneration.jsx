@@ -1,23 +1,21 @@
 import React, {useState} from 'react';
 import GeneratedItem from "./GeneratedItem.jsx";
 import {useSelector} from "react-redux";
-import Modal from "./Modal.jsx";
+import Tooltip from "./Tooltip.jsx";
 import EmptyItemSlot from "./EmptyItemSlot.jsx";
 
 const ItemsGeneration = () => {
 
     const generatedItems = useSelector(state => state.items.generatedItems)
-    console.log('generatedItems', generatedItems)
-
 
     return (
 
-        <div className="w-full min-h-[8rem]">
+        <div className="w-full min-h-[9rem]">
 
 
             {generatedItems.length > 0 &&
 
-                <div className="flex w-2/3  gap-4 justify-center">
+                <div className="flex gap-4 justify-center">
 
                     {generatedItems.map((item, i) => (
                         <GeneratedItem

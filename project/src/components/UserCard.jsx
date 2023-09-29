@@ -2,7 +2,7 @@ import React from 'react';
 
 const UserCard = () => {
     return (
-        <div className="flex p-4 rounded bg-slate-200 justify-between">
+        <div className="flex p-4 rounded bg-slate-700 justify-between">
             <div className="w-16 h-16">
                 <img
                     className="w-full h-full object-contain"
@@ -11,7 +11,7 @@ const UserCard = () => {
             </div>
             <div className="flex flex-col justify-between">
                 <div>username</div>
-                <button className="bg-slate-300 px-4 py-1">request to play</button>
+                <button className="bg-purple-900 rounded px-4 py-1">request to play</button>
             </div>
         </div>
     );

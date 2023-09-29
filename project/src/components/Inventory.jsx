@@ -8,16 +8,16 @@ const Inventory = () => {
 
     useEffect(() => {
 
+        console.log('inventory from inventory component', inventory)
 
-
-    }, [inventory])
+    }, [])
 
     console.log(inventory)
 
     return (
-        <div className="flex flex-col items-center gap-2 w-full z-10">
-            <div>Inventory</div>
-                <div className="p-2 w-full min-h-[13rem] grid grid-cols-8 gap-2 bg-slate-50 rounded">
+        <div className="flex flex-col items-center gap-2 w-full z-10 border rounded border-purple-500 p-2">
+            <div className="w-full bg-purple-950 text-center py-1 rounded text-slate-50">Inventory</div>
+                <div className="p-2 w-full min-h-[13rem] grid grid-cols-8 gap-2 rounded">
                     {
                         inventory.length > 0 && inventory.map((item, i) => (
                             <InventoryItem

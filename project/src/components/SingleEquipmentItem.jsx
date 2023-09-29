@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Modal from "./Modal.jsx";
+import Tooltip from "./Tooltip.jsx";
 import {setArmour, setPotion, setWeapon} from "../features/itemsSlice.jsx";
 import {useDispatch} from "react-redux";
 
@@ -31,15 +31,48 @@ const SingleEquipmentItem = ({item}) => {
         <div
             onMouseEnter={onHover}
             onMouseLeave={onLeaveHover}
-            className="w-24 h-24 bg-slate-200 relative">
-            <img className=" w-full h-full object-contain" src={item.image} alt=""/>
+            className="relative flex gap-4 ">
+            <img className=" w-16 h-16 object-contain" src={item.image} alt=""/>
+            <div className="felx flex-col text-sm leading-tight	">
+                <div>
+                    {
+                        item.grade &&
+                        <div>Grade: {item.grade}</div>
+                    }
+                </div>
+                <div>
+                    {
+                        item.hp &&
+                        <div>Restores HP: {item.hp}</div>
+                    }
+                </div>
+                <div>
+                    {
+                        item.effects && item.effects.length > 0 &&
+                        <div className="flex flex-col">
+                            <div>Effects:</div>
+                            <ul className="list-disc ml-4">
+                                {item.effects.map((effect, i) => (
+                                    <li
+                                        key={i}
+                                    >{effect}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
-            {
-                showOnHover &&
-                <Modal
-                    item={item}
-                />
-            }
+                    }
+                </div>
+
+                <div>
+                    {
+                        item.generateGold &&
+                        <div>Generate gold: {item.generateGold}</div>
+                    }
+                </div>
+            </div>
+
+
 
             {
                 showOnHover &&

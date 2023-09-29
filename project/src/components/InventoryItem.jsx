@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import Modal from "./Modal.jsx";
+import Tooltip from "./Tooltip.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {getInventory, setArmour, setPotion, setShowModal, setWeapon} from "../features/itemsSlice.jsx";
+import {setInventory, setArmour, setPotion, setShowModal, setWeapon} from "../features/itemsSlice.jsx";
+import socket from "../socket.jsx";
 
 const InventoryItem = ({item}) => {
 
     const dispatch = useDispatch()
+    const token = useSelector(state => state.user.token)
 
     const [showOnHover, setShowOnHover] = useState(false);
 
@@ -17,40 +19,30 @@ const InventoryItem = ({item}) => {
         setShowOnHover(false);
     }
 
-    const deleteFromInventory = async (itemId) => {
-        const options = {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                "authorization": localStorage.getItem('token')
-            },
-            body: JSON.stringify({itemId})
-        }
+    const deleteFromInventory = (itemId) => {
+        console.log('delete from inventory clicked')
 
-        try {
-            const response = await fetch('http://localhost:8000/deleteItem', options)
-            const data = await response.json()
-            console.log(data)
-            if (data.error === false) {
-                dispatch(getInventory(data.data))
-            } else {
-                console.log(data.message)
-            }
-        } catch (error) {
-            console.log(error)
-        }
+        socket().emit('deleteFromInventory', ({token, itemId}))
+
+        socket().on('updatedInventory', (data) => {
+            console.log('data from sockets inventory', data)
+                dispatch(setInventory(data))
+        })
 
     }
 
     const takeToBattle = (item) => {
         if (item.name === 'weapon' || item.name === 'default weapon') {
             dispatch(setWeapon(item))
+
         }
         if (item.name === 'armour') {
             dispatch(setArmour(item))
+            //send to back
         }
         if (item.name === 'potion') {
             dispatch(setPotion(item))
+            //send to back
         }
     }
 
@@ -60,10 +52,10 @@ const InventoryItem = ({item}) => {
             onMouseEnter={onHover}
             onMouseLeave={onLeaveHover}
             onClick={() => takeToBattle(item)}
-            className="bg-slate-300 rounded justify-self-center w-20 h-20 hover:bg-slate-200 cursor-pointer relative">
+            className="border rounded border-purple-500 justify-self-center w-20 h-20 hover:bg-purple-900 cursor-pointer relative p-2">
             {
                 showOnHover &&
-                <Modal
+                <Tooltip
                     item={item}
                 />
             }
@@ -72,7 +64,7 @@ const InventoryItem = ({item}) => {
                 showOnHover &&
                 <div
                     onClick={() => deleteFromInventory(item._id)}
-                    className="absolute top-0 right-0 bg-red-300 text-slate-800 h-4 w-4 flex justify-center items-center">
+                    className="absolute top-0 right-0 bg-red-500 text-slate-800 h-4 w-4 flex justify-center items-center">
                     <i className="fas fa-times"></i>
                 </div>
             }

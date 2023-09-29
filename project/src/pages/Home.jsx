@@ -6,7 +6,7 @@ import Inventory from "../components/Inventory.jsx";
 import EquipmentItems from "../components/EquipmentItems.jsx";
 import AllUsers from "../components/AllUsers.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {clearGeneratedItems, getInventory, setGeneratedItems} from "../features/itemsSlice.jsx";
+import {clearGeneratedItems, setInventory, setGeneratedItems} from "../features/itemsSlice.jsx";
 
 
 const Home = () => {
@@ -28,30 +28,32 @@ const Home = () => {
         fetch('http://localhost:8000/getInventory', options)
             .then(res => res.json())
             .then(data => {
-                dispatch(getInventory(data.data))
+                dispatch(setInventory(data.data))
             })
+
+        // fetch('http://localhost:8000/getUser', options)
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         dispatch(getInventory(data.data))
+        //     })
+
 
         console.warn('Observe items generation')
 
         socket().on('generatedWeapon', (weapon) => {
-            console.log('WEAPON')
-            console.log('    weapon:', weapon)
-            console.log('    effects:', JSON.stringify(weapon.effects))
+            console.log('  WEAPON  effects:', JSON.stringify(weapon.effects))
             dispatch(setGeneratedItems(weapon))
         })
 
         socket().on('generatedArmour', (armour) => {
-            console.log('ARMOUR')
-            console.log('    armour:', armour)
-            console.log('    effects:', JSON.stringify(armour.effects))
+            console.log(' ARMOUR   effects:', JSON.stringify(armour.effects))
             dispatch(setGeneratedItems(armour))
         })
 
         socket().on('generatedPotion', (potion) => {
-            console.log('POTION')
-            console.log('potion:', potion)
             dispatch(setGeneratedItems(potion))
         })
+
 
 
 
@@ -79,32 +81,32 @@ const Home = () => {
 
     return (
 
-        <div className="h-screen flex flex-col bg-cover bg-[url('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg?w=1380&t=st=1695913807~exp=1695914407~hmac=00900eec206211758f52652cbb6ec053c93e97bf934491648ce4650618b0e57e')]">
+        <div className="flex flex-col min-h-screen bg-cover bg-[url('./assets/31.jpg')] ">
 
             <Navbar/>
-            <div className="flex-1 flex">
+            <div className="flex p-2">
 
-                <div className="bg-slate-100 w-2/3 h-full">
-                    <div className="flex justify-around items-center gap-10 border-2 rounded p-2">
+                <div className="w-2/3">
+                    <div className="flex justify-center items-center rounded px-10">
                         <ItemsGeneration/>
                         <div className="flex justify-center">
                             <button
                                 onClick={generateItems}
-                                className="bg-slate-300 px-6 py-1">
+                                className="bg-purple-950 px-3 py-1 rounded hover:bg-purple-800 text-slate-100">
                                 Generate
                             </button>
                         </div>
 
 
                     </div>
-                    <div className="flex flex-col justify-center items-center gap-8 border-2 rounded p-2 bg-slate-200">
+                    <div className="flex flex-col justify-center items-center gap-2 rounded p-2">
                         <Inventory/>
                         <EquipmentItems/>
                     </div>
                 </div>
 
 
-                <div className="bg-blue-200 w-1/3 h-full">
+                <div className="bg-slate-800 rounded text-slate-100 p-2 w-1/3 h-full">
                     <div>users to play with</div>
                     <AllUsers/>
                 </div>
