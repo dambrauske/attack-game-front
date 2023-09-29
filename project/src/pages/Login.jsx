@@ -1,8 +1,9 @@
 import React, {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setToken} from "../features/userSlice.jsx";
+import {setMoney, setToken, setUserImage, setUsername} from "../features/userSlice.jsx";
 import Images from "../components/Images.jsx";
+import {setWeapon} from "../features/itemsSlice.jsx";
 
 const Login = () => {
 
@@ -44,12 +45,15 @@ const Login = () => {
             body: JSON.stringify(user)
         }
 
-
         try {
             const response = await fetch('http://localhost:8000/login', options)
             const data = await response.json()
             console.log(data)
             dispatch(setToken(data.data.token))
+            dispatch(setWeapon(data.data.defaultWeapon))
+            dispatch(setUsername(data.data.username))
+            dispatch(setUserImage(data.data.image))
+            dispatch(setMoney(data.data.money))
             navigate('/home')
 
         } catch (error) {
@@ -60,21 +64,24 @@ const Login = () => {
 
 
     return (
-        <div className="bg-gradient-to-r from-green-300 to-purple-400 h-screen flex justify-center items-center">
-            <div className="flex flex-col gap-4 bg-slate-50 p-4 pt-10 rounded w-6/12 items-center">
+        // <div className="bg-cover bg-[url('https://img.freepik.com/free-vector/abstract-blue-background-with-lines_79603-873.jpg?w=1380&t=st=1695963911~exp=1695964511~hmac=dca3656832b81772007597ab36fb86d4d1326f1fb6f8cf6db8e584e384df40ed')] h-screen flex justify-center items-center">
+        <div className="bg-cover bg-[url('https://img.freepik.com/free-vector/abstract-background_79603-31.jpg?w=1380&t=st=1695963692~exp=1695964292~hmac=733b94b4fe6bde6cb499ea7f9135eee03a2fb5f86f4fdc1e435cbeb0389b4bf4')] h-screen flex justify-center items-center">
+        {/*// <div className="bg-cover bg-[url('https://img.freepik.com/free-vector/abstract-background_79603-31.jpg?w=1380&t=st=1695963692~exp=1695964292~hmac=733b94b4fe6bde6cb499ea7f9135eee03a2fb5f86f4fdc1e435cbeb0389b4bf4')] h-screen flex justify-center items-center">*/}
+        {/*<div className="bg-cover bg-[url('https://img.freepik.com/free-vector/shiny-diagonal-lines-blue-orange-colors_1017-27056.jpg?w=1480&t=st=1695963688~exp=1695964288~hmac=191f85242f48768bcc53aea609353ee2a7379575feb506b4a6e1f69135f6a48a')] h-screen flex justify-center items-center">*/}
+            <div className="flex flex-col gap-4 bg-slate-950 p-4 pt-10 rounded-l w-6/12 items-center shadow-2xl	">
                 <Images/>
                 <div className="flex flex-col gap-6 p-4 rounded justify-center items-center">
                     <input
-                        className="bg-slate-200 p-1 rounded"
+                        className="bg-slate-700 text-slate-100 placeholder-slate-500 p-1 rounded outline-none"
                         ref={usernameRef}
                         type="text" placeholder="username"/>
                     <input
-                        className="bg-slate-200 p-1 rounded"
+                        className="bg-slate-700 placeholder-slate-500 p-1 rounded outline-none"
                         ref={passwordRef}
                         type="password" placeholder="password"/>
                     <button
                         onClick={login}
-                        className="w-2/3 bg-blue-300 border rounded hover:bg-green-300 p-1">Start game
+                        className="w-2/3 bg-purple-800 text-indigo-200 font-bold uppercase rounded hover:bg-purple-700 p-1">Start game
                     </button>
 
                     <div className="h-6 flex justify-center items-center text-center">

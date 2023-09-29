@@ -5,15 +5,32 @@ import Navbar from "../components/Navbar.jsx";
 import Inventory from "../components/Inventory.jsx";
 import EquipmentItems from "../components/EquipmentItems.jsx";
 import AllUsers from "../components/AllUsers.jsx";
-import {useDispatch} from "react-redux";
-import {setGeneratedItems} from "../features/itemsSlice.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {clearGeneratedItems, getInventory, setGeneratedItems} from "../features/itemsSlice.jsx";
 
 
 const Home = () => {
 
     const dispatch = useDispatch()
+    const inventory = useSelector(state => state.items.inventory)
 
     useEffect(() => {
+
+        const options = {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+                "authorization": localStorage.getItem('token')
+            },
+            body: null
+        }
+
+        fetch('http://localhost:8000/getInventory', options)
+            .then(res => res.json())
+            .then(data => {
+                dispatch(getInventory(data.data))
+            })
+
         console.warn('Observe items generation')
 
         socket().on('generatedWeapon', (weapon) => {
@@ -36,19 +53,21 @@ const Home = () => {
             dispatch(setGeneratedItems(potion))
         })
 
+
+
         return () => {
             console.warn('Cleanup on component destroy')
             socket().off('generatedWeapon')
-            socket().off('generateWeapon')
             socket().off('generatedArmour')
-            socket().off('generateArmour')
             socket().off('generatedPotion')
-            socket().off('generatePotion')
+            socket().off('generatedDefaultWeapon')
+
         }
     }, [])
 
 
     const generateItems = () => {
+        dispatch(clearGeneratedItems())
         socket().emit('generateWeapon')
         socket().emit('generateArmour')
         socket().emit('generatePotion')
@@ -60,12 +79,13 @@ const Home = () => {
 
     return (
 
-        <div className="h-screen flex flex-col">
+        <div className="h-screen flex flex-col bg-cover bg-[url('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg?w=1380&t=st=1695913807~exp=1695914407~hmac=00900eec206211758f52652cbb6ec053c93e97bf934491648ce4650618b0e57e')]">
+
             <Navbar/>
             <div className="flex-1 flex">
 
                 <div className="bg-slate-100 w-2/3 h-full">
-                    <div className="flex flex-col justify-center gap-2 border-2 rounded p-2">
+                    <div className="flex justify-around items-center gap-10 border-2 rounded p-2">
                         <ItemsGeneration/>
                         <div className="flex justify-center">
                             <button

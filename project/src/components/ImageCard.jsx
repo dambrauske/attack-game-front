@@ -8,7 +8,7 @@ const ImageCard = ({image, onClick, index}) => {
     return (
         <div
             onClick={onClick}
-            className={`cursor-pointer w-32 h-32 ${selectedImage === image? 'border-8 border-purple-700' : ''}`}>
+            className={`cursor-pointer w-32 h-32 ${selectedImage === image? 'border-8 border-indigo-800' : ''}`}>
             <img
                 className="w-full h-full object-cover"
                 src={image} alt=""/>

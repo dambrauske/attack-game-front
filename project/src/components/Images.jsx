@@ -10,7 +10,6 @@ const Images = () => {
     const images = useSelector(state => state.user.images)
     const selectedImage = useSelector(state => state.user.image)
 
-    console.log(images)
     const selectImage = (index) => {
         console.log('cell clicked')
         if (images[index].username === '') {

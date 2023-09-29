@@ -4,7 +4,8 @@ const Modal = ({item}) => {
     return (
         <div
 
-            className="w-28 h-28 bg-slate-200 rounded border flex flex-col border-slate-700 absolute top-0 left-28 text-xs p-1 ">
+            className="w-28 h-min bg-slate-200 rounded border flex flex-col border-slate-700 absolute top-0 left-full text-xs p-1 z-50">
+            <div className="uppercase tracking-wider underline mb-1">{item.name}</div>
             <div>
                 {
                     item.grade &&

@@ -1,12 +1,54 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Modal from "./Modal.jsx";
+import {setArmour, setPotion, setWeapon} from "../features/itemsSlice.jsx";
+import {useDispatch} from "react-redux";
 
-const SingleEquipmentItem = () => {
+const SingleEquipmentItem = ({item}) => {
+
+    const [showOnHover, setShowOnHover] = useState(false);
+    const dispatch = useDispatch()
+    const onHover = () => {
+        setShowOnHover(true);
+    }
+
+    const onLeaveHover = () => {
+        setShowOnHover(false);
+    }
+
+    const removeFromEquipment = (item) => {
+        if (item.name === 'weapon') {
+            dispatch(setWeapon(undefined))
+        }
+        if (item.name === 'armour') {
+            dispatch(setArmour(undefined))
+        }
+        if (item.name === 'potion') {
+            dispatch(setPotion(undefined))
+        }
+    }
+
     return (
-        <div className="flex flex-col md:w-1/6 md:h-1/6 h-1/12 w-1/12 gap-2 items-center">
-            <div className=" bg-slate-200">
-                <img src="https://freepngimg.com/save/91292-weapon-game-angle-cartoon-sword-download-hq-png/887x887" alt=""/>
-            </div>
-            <div>weapon</div>
+        <div
+            onMouseEnter={onHover}
+            onMouseLeave={onLeaveHover}
+            className="w-24 h-24 bg-slate-200 relative">
+            <img className=" w-full h-full object-contain" src={item.image} alt=""/>
+
+            {
+                showOnHover &&
+                <Modal
+                    item={item}
+                />
+            }
+
+            {
+                showOnHover &&
+                <div
+                    onClick={() => removeFromEquipment(item)}
+                    className="absolute top-0 right-0 bg-red-300 text-slate-800 h-4 w-4 flex justify-center items-center">
+                    <i className="fas fa-times"></i>
+                </div>
+            }
         </div>
 
     );
