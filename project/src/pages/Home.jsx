@@ -20,9 +20,7 @@ const Home = () => {
     const token = useSelector(state => state.user.token)
     const price = useSelector(state => state.items.itemsGenerationPrice)
     const modal = useSelector(state => state.user.modal)
-    const username = useSelector(state => state.user.username)
-    const sender = useSelector(state => state.request.sender)
-    const receiver = useSelector(state => state.request.receiver)
+
 
     useEffect(() => {
 

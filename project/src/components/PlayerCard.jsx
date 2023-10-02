@@ -6,7 +6,6 @@ const PlayerCard = ({user}) => {
 
 
 
-
     return (
         <div className="p-4 border rounded w-60 flex flex-col gap-2">
             <div className="text-white">{user.username}</div>

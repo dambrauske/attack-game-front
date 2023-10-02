@@ -2,10 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import socket from "../socket.jsx";
 import {setLost, setPlayer1, setPlayer2, setWon} from "../features/GameSlice.jsx";
+import {useNavigate} from "react-router-dom";
 
 const GameInfo = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const player1 = useSelector(state => state.game.player1)
     const player2 = useSelector(state => state.game.player2)
     const userUsername = useSelector(state => state.user.username)
@@ -13,9 +15,6 @@ const GameInfo = () => {
     const winner = useSelector(state => state.game.won)
 
     const playerTurn = player1.attackTurn
-
-
-
 
 
     useEffect(() => {
@@ -44,13 +43,6 @@ const GameInfo = () => {
 
         });
 
-        // socket().on('gameOver', (data) => {
-        //     console.log(data)
-        //     dispatch(setLost(data.lost))
-        //     dispatch(setWon(data.won))
-        // });
-
-        // Clean up the event listener when the component unmounts
         return () => {
             socket().off('attackData');
         };
@@ -65,6 +57,11 @@ const GameInfo = () => {
 
     };
 
+    const backToHome = () => {
+        socket().emit('leaveRoom', 'gameRoom')
+        navigate('/home')
+    }
+
     return (
         <div className="flex flex-col gap-8 text-white items-center justify-center">
             <div>{playerTurn} turn</div>
@@ -76,7 +73,13 @@ const GameInfo = () => {
             <div className="h-10">
                 {
                     winner &&
-                    <div className="text-red-800 text-xl">{winner} won!</div>
+                    <div className="flex flex-col gap-2 justify-center items-center">
+                        <div className="text-red-800 text-xl">{winner} won!</div>
+                        <button
+                            onClick={backToHome}
+                            className="bg-purple-950 px-3 py-1 rounded hover:bg-purple-800 text-white text-left"
+                        >Go back to main page</button>
+                    </div>
                 }
             </div>
 

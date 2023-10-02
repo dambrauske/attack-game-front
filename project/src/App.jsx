@@ -11,7 +11,6 @@ import {setReceiverUsername, setSenderMessage, setSenderSocketId, setSenderUsern
 import GamePage from "./pages/GamePage.jsx";
 
 function App() {
-    const token = useSelector(state => state.user.token)
 
     const dispatch = useDispatch()
 
@@ -33,18 +32,6 @@ function App() {
             dispatch(setSenderSocketId(data.senderId))
             dispatch(setSenderMessage(data.message))
         })
-
-        // window.addEventListener('beforeunload', () => {
-        //     socket.emit('userDisconnect', token)
-        //     socket.disconnect()
-        // })
-        //
-        // return () => {
-        //     window.removeEventListener('beforeunload', () => {
-        //         socket.emit('userDisconnect', token)
-        //         socket.disconnect()
-        //     })
-        // }
 
     }, [])
 

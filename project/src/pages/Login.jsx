@@ -32,10 +32,10 @@ const Login = () => {
         if (selectedImage === '') return setError('Please select your warrior')
 
         if (username.length === 0) return setError('Username cannot be blank')
-        // if (username.length < 4) return setError('Username should be at least 4 characters long')
+        if (username.length < 4) return setError('Username should be at least 4 characters long')
 
         if (password.length === 0) return setError('Password cannot be blank')
-        // if (password.length < 6) return setError('Password should be at least 6 characters long')
+        if (password.length < 6) return setError('Password should be at least 6 characters long')
 
         setError('')
 
@@ -64,9 +64,7 @@ const Login = () => {
             navigate('/home')
             dispatch(clearLoggedInUsers())
             socket().emit('userLogin', (data.data.token))
-            // socket().on('loggedInUsers', (loggedInUsers) => {
-            //     dispatch(setLoggedInUsers(loggedInUsers))
-            // })
+
 
         } catch (error) {
             console.log(error)

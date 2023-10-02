@@ -1,15 +1,12 @@
-import React, {useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {setModal} from "../features/userSlice.jsx";
-import socket from "../socket.jsx";
 
 const Modal = ({acceptGame, declineGame, }) => {
 
     const dispatch = useDispatch()
     const sender = useSelector(state => state.request.sender)
     const senderId = useSelector(state => state.request.senderSocketId)
-    const receiver = useSelector(state => state.request.receiver)
     const username = useSelector(state => state.user.username)
 
 

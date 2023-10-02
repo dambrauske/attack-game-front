@@ -29,8 +29,8 @@ const GamePage = () => {
 
             <Navbar/>
             <div className="p-4">
-                <button className="bg-purple-950 px-3 py-1 rounded hover:bg-purple-800 text-white text-left">BACK
-                </button>
+                {/*<button className="bg-purple-950 px-3 py-1 rounded hover:bg-purple-800 text-white text-left">BACK*/}
+                {/*</button>*/}
                 <div className="flex gap-20 justify-center">
                     <PlayerCard
                         user={player1}

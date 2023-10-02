@@ -7,7 +7,6 @@ import socket from "../socket.jsx";
 const SingleEquipmentItem = ({item}) => {
 
     const [showOnHover, setShowOnHover] = useState(false);
-    const dispatch = useDispatch()
     const token = useSelector(state => state.user.token)
 
     const onHover = () => {

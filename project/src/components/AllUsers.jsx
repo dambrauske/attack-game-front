@@ -9,7 +9,6 @@ const AllUsers = () => {
 
     const dispatch = useDispatch()
     const users = useSelector(state => state.user.loggedInUsers)
-    const token = useSelector(state => state.user.token)
 
     useEffect(() => {
         socket().emit('getLoggedInUsers')
