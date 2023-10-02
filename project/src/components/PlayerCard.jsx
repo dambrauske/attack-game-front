@@ -3,6 +3,11 @@ import Progressbar from "./Progressbar.jsx";
 import EquipmentItemInFight from "./EquipmentItemInFight.jsx";
 
 const PlayerCard = ({user}) => {
+
+
+    console.warn('USER INSIDE PLAYER CARD', JSON.stringify(user))
+
+
     return (
         <div className="p-4 border rounded w-60 flex flex-col gap-2">
             <div className="text-white">{user.username}</div>
@@ -17,11 +22,14 @@ const PlayerCard = ({user}) => {
             <Progressbar
             width={user.hp}
             />
-            <div className="flex justify-center">
-                {/*// MAP EQUIPMENT ITEMS*/}
-                <EquipmentItemInFight/>
-                <EquipmentItemInFight/>
-                <EquipmentItemInFight/>
+            <div className="flex justify-center gap-2">
+
+                {user?.equipment?.map((item, i)=>(<EquipmentItemInFight
+                    key={i}
+                    item={item}
+                />))}
+
+
             </div>
         </div>
     );

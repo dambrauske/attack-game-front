@@ -25,6 +25,7 @@ const Home = () => {
     const receiver = useSelector(state => state.request.receiver)
 
     useEffect(() => {
+
         console.warn('Observe items generation')
 
         socket().emit('getEquipment', ({token}))
@@ -35,15 +36,8 @@ const Home = () => {
         socket().on('acceptedGameRequest', (data) => {
             console.log('data from accepted game request', data)
             navigate("/game")
-            joinGame(sender, receiver)
+            socket().emit('joinGame', data.sender, data.receiver)
         })
-
-        const joinGame = (sender, receiver) => {
-            socket().emit('joinGame', sender, receiver)
-        }
-
-        console.log('sender', sender)
-        console.log('receiver', receiver)
 
         socket().on('declinedGameRequest', (message) => {
             console.log('message from declined game request', message)

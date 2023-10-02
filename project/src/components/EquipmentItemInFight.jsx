@@ -1,9 +1,9 @@
 import React from 'react';
 
-const EquipmentItemInFight = () => {
+const EquipmentItemInFight = ({item}) => {
     return (
-        <div className="rounded  p-2">
-            <div className="w-12 h-12 bg-slate-200"></div>
+        <div className="rounded w-12 h-12 p-2 bg-slate-800">
+            <img className="w-full h-full object-cover" src={item.image} alt=""/>
         </div>
     );
 };

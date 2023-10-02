@@ -5,6 +5,7 @@ import GameInfo from "../components/GameInfo.jsx";
 import socket from "../socket.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {setPlayer1, setPlayer2} from "../features/GameSlice.jsx";
+import {setLoggedInUsers} from "../features/userSlice.jsx";
 
 const GamePage = () => {
 
@@ -12,8 +13,18 @@ const GamePage = () => {
     const player1 = useSelector(state => state.game.player1)
     const player2 = useSelector(state => state.game.player2)
 
-    console.log('player1', player1)
-    console.log('player2', player2)
+    console.log('player1', JSON.stringify(player1))
+    console.log('player2', JSON.stringify(player2))
+
+    // useEffect(() => {
+    //     socket().emit('getLoggedInUsers')
+    //     socket().on('loggedInUsers', (loggedInUsers) => {
+    //         dispatch(setLoggedInUsers(loggedInUsers))
+    //     })
+    //
+    // }, [])
+
+
     // useEffect(() => {
     //
     //     socket().emit('gameData');
