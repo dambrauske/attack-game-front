@@ -12,6 +12,8 @@ export const userSlice = createSlice({
             money,
             token,
             images: [],
+            loggedInUsers: [],
+            modal: false,
         }, reducers: {
             setToken: (state, action) => {
                 state.token = action.payload
@@ -20,6 +22,12 @@ export const userSlice = createSlice({
             setUsername: (state, action) => {
                 state.username = action.payload
                 localStorage.setItem('username', state.username)
+            },
+            setLoggedInUsers: (state, action) => {
+                state.loggedInUsers = action.payload
+            },
+            clearLoggedInUsers: (state) => {
+                state.loggedInUsers = []
             },
             setMoney: (state, action) => {
                 state.money = action.payload
@@ -32,6 +40,9 @@ export const userSlice = createSlice({
             setImages: (state, action) => {
                 state.images = action.payload
             },
+            setModal: (state, action) => {
+                state.modal = action.payload
+            },
 
         }
     }
@@ -42,6 +53,9 @@ export const {
     setMoney,
     setUserImage,
     setImages,
+    setLoggedInUsers,
+    setModal,
+    clearLoggedInUsers,
 } = userSlice.actions
 
 export default userSlice.reducer

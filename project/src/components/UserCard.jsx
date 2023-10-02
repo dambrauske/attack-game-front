@@ -1,19 +1,50 @@
 import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import socket from "../socket.jsx";
+import {setReceiverUsername, setSenderSocketId, setSenderUsername} from "../features/requestSlice.jsx";
 
-const UserCard = () => {
+const UserCard = ({user}) => {
+
+    const username = useSelector(state => state.user.username)
+    const userEquipment = useSelector(state => state.items.fightEquipment)
+    const dispatch = useDispatch()
+    const requestToPlay = (targetSocketId, sender, receiver) => {
+
+        const hasWeapon = userEquipment.some(item => item.name === 'weapon');
+
+        if (hasWeapon) {
+            socket().emit('sendGameRequest', targetSocketId, sender, receiver)
+            dispatch(setSenderSocketId(targetSocketId))
+            dispatch(setSenderUsername(sender))
+            dispatch(setReceiverUsername(receiver))
+        } else {
+            alert('You need a weapon in your equipment in order to request to play')
+        }
+    }
+
     return (
-        <div className="flex p-4 rounded bg-slate-700 justify-between">
-            <div className="w-16 h-16">
-                <img
-                    className="w-full h-full object-contain"
-                    src="data:image/jpeg;base64,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"
-                    alt=""/>
-            </div>
-            <div className="flex flex-col justify-between">
-                <div>username</div>
-                <button className="bg-purple-900 rounded px-4 py-1">request to play</button>
-            </div>
+        <div>
+            {
+                user.username !== username &&
+                <div className="flex p-4 rounded bg-slate-700 justify-between">
+                    <div className="w-16 h-16">
+                        <img
+                            className="w-full h-full object-cover"
+                            src={user.image}
+                            alt=""/>
+                    </div>
+                    <div className="flex flex-col justify-between">
+                        <div>{user.username}</div>
+                        <button
+                            onClick={() => requestToPlay(user.socketId, username, user.username)}
+                            className="bg-purple-900 rounded px-4 py-1">request to play</button>
+                    </div>
+                </div>
+            }
         </div>
+
+
+
     );
 };
 

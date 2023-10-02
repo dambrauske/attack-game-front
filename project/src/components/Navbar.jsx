@@ -1,17 +1,28 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {clearGeneratedItems} from "../features/itemsSlice.jsx";
+import socket from "../socket.jsx";
+import {setLoggedInUsers} from "../features/userSlice.jsx";
 
 const Navbar = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const money = useSelector(state => state.user.money)
     const username = useSelector(state => state.user.username)
     const image = useSelector(state => state.user.image)
+    const token = useSelector(state => state.user.token)
 
     const logout = () => {
         navigate('/')
         localStorage.clear()
+        dispatch(clearGeneratedItems())
+        socket().emit('userLoggedOut', (token))
+        socket().on('loggedInUsers', (loggedInUsers) => {
+            dispatch(setLoggedInUsers(loggedInUsers))
+        })
+
     }
 
     return (

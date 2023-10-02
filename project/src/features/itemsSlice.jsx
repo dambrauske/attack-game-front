@@ -10,6 +10,7 @@ export const itemsSlice = createSlice({
         name: "items",
         initialState: {
             generatedItems: [],
+            itemsGenerationPrice: 100,
             inventory: inventory ? JSON.parse(inventory) : [],
             fightEquipment: fightEquipment ? JSON.parse(fightEquipment) : [],
             showModal: false,
@@ -21,7 +22,7 @@ export const itemsSlice = createSlice({
                 if (state.generatedItems.length === 3) {
                     state.generatedItems = []
                 }
-                state.generatedItems.push(action.payload)
+                state.generatedItems = action.payload
             },
             clearGeneratedItems: (state) => {
                 state.generatedItems = []
@@ -36,7 +37,7 @@ export const itemsSlice = createSlice({
 
             },
             setFightEquipment: (state, action) => {
-                state.inventory.push(action.payload)
+                state.fightEquipment = action.payload
                 localStorage.setItem('fightEquipment', JSON.stringify(state.fightEquipment))
             },
             setShowModal: (state, action) => {
@@ -68,6 +69,7 @@ export const {
     setPotion,
     setWeapon,
     setArmour,
+    setFightEquipment,
 } = itemsSlice.actions
 
 export default itemsSlice.reducer

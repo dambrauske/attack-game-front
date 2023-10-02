@@ -12,7 +12,6 @@ const ItemsGeneration = () => {
 
         <div className="w-full min-h-[9rem]">
 
-
             {generatedItems.length > 0 &&
 
                 <div className="flex gap-4 justify-center">

@@ -1,13 +1,21 @@
 import React, {useState} from 'react';
 import Tooltip from "./Tooltip.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {setInventory, setArmour, setPotion, setShowModal, setWeapon} from "../features/itemsSlice.jsx";
+import {
+    setInventory,
+    setArmour,
+    setPotion,
+    setShowModal,
+    setWeapon,
+    setFightEquipment
+} from "../features/itemsSlice.jsx";
 import socket from "../socket.jsx";
 
 const InventoryItem = ({item}) => {
 
     const dispatch = useDispatch()
     const token = useSelector(state => state.user.token)
+    const fightEquipment = useSelector(state => state.items.fightEquipment)
 
     const [showOnHover, setShowOnHover] = useState(false);
 
@@ -20,38 +28,32 @@ const InventoryItem = ({item}) => {
     }
 
     const deleteFromInventory = (itemId) => {
-        console.log('delete from inventory clicked')
-
         socket().emit('deleteFromInventory', ({token, itemId}))
-
         socket().on('updatedInventory', (data) => {
             console.log('data from sockets inventory', data)
                 dispatch(setInventory(data))
         })
+    }
+
+    const takeToEquipment = (item) => {
+        console.log('take to equipment clicked, item:', item)
+        socket().emit('addToEquipment', ({token, item}))
+
+        socket().on('updatedEquipment', (data) => {
+            console.log('data from updated equipment', data)
+            dispatch(setFightEquipment(data))
+        })
 
     }
 
-    const takeToBattle = (item) => {
-        if (item.name === 'weapon' || item.name === 'default weapon') {
-            dispatch(setWeapon(item))
-
-        }
-        if (item.name === 'armour') {
-            dispatch(setArmour(item))
-            //send to back
-        }
-        if (item.name === 'potion') {
-            dispatch(setPotion(item))
-            //send to back
-        }
-    }
+    console.log('fightEquipment', fightEquipment)
 
 
     return (
         <div
             onMouseEnter={onHover}
             onMouseLeave={onLeaveHover}
-            onClick={() => takeToBattle(item)}
+            onClick={() => takeToEquipment(item)}
             className="border rounded border-purple-500 justify-self-center w-20 h-20 hover:bg-purple-900 cursor-pointer relative p-2">
             {
                 showOnHover &&
@@ -63,8 +65,11 @@ const InventoryItem = ({item}) => {
             {
                 showOnHover &&
                 <div
-                    onClick={() => deleteFromInventory(item._id)}
-                    className="absolute top-0 right-0 bg-red-500 text-slate-800 h-4 w-4 flex justify-center items-center">
+                    onClick={(event) => {
+                        event.stopPropagation()
+                        deleteFromInventory(item._id)
+                    }}
+                    className="absolute top-0 right-0 bg-red-500 text-slate-800 h-4 w-4 flex justify-center items-center z-50">
                     <i className="fas fa-times"></i>
                 </div>
             }

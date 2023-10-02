@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setInventory} from "../features/itemsSlice.jsx";
+import {removeFromGeneratedItems, setInventory} from "../features/itemsSlice.jsx";
 import socket from "../socket.jsx";
 
 const GeneratedItem = ({item}) => {
@@ -19,14 +19,11 @@ const GeneratedItem = ({item}) => {
 
     const takeToInventory = (item) => {
         console.log('take to inventory clicked')
-
+        dispatch(removeFromGeneratedItems(item))
         socket().emit('addToInventory', ({token, item}))
-
         socket().on('updatedInventory', (data) => {
-            console.log('data from sockets inventory', data)
             dispatch(setInventory(data))
         })
-
     }
 
     return (
@@ -51,7 +48,10 @@ const GeneratedItem = ({item}) => {
                         <div> + {item.damage} damage</div>
                     }
                     {
-                        item.generateGold &&
+                        item.armour > 0 &&
+                        <div> + {item.armour} armour</div>
+                    }{
+                        item.generateGold && item.generateGold !== 0 &&
                         <div> + {item.generateGold} gold</div>
                     }
                     {

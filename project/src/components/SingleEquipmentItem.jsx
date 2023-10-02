@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import Tooltip from "./Tooltip.jsx";
 import {setArmour, setPotion, setWeapon} from "../features/itemsSlice.jsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import socket from "../socket.jsx";
 
 const SingleEquipmentItem = ({item}) => {
 
     const [showOnHover, setShowOnHover] = useState(false);
     const dispatch = useDispatch()
+    const token = useSelector(state => state.user.token)
+
     const onHover = () => {
         setShowOnHover(true);
     }
@@ -15,16 +18,11 @@ const SingleEquipmentItem = ({item}) => {
         setShowOnHover(false);
     }
 
-    const removeFromEquipment = (item) => {
-        if (item.name === 'weapon') {
-            dispatch(setWeapon(undefined))
-        }
-        if (item.name === 'armour') {
-            dispatch(setArmour(undefined))
-        }
-        if (item.name === 'potion') {
-            dispatch(setPotion(undefined))
-        }
+    const removeFromEquipment = (itemId) => {
+        socket().emit('deleteFromEquipment', ({token, itemId}))
+        socket().on('updatedEquipment', (data) => {
+            console.log('updatedEquipment', data)
+        })
     }
 
     return (
@@ -77,7 +75,7 @@ const SingleEquipmentItem = ({item}) => {
             {
                 showOnHover &&
                 <div
-                    onClick={() => removeFromEquipment(item)}
+                    onClick={() => removeFromEquipment(item._id)}
                     className="absolute top-0 right-0 bg-red-300 text-slate-800 h-4 w-4 flex justify-center items-center">
                     <i className="fas fa-times"></i>
                 </div>

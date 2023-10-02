@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import socket from "../socket.jsx";
 import ItemsGeneration from "../components/ItemsGeneration.jsx";
 import Navbar from "../components/Navbar.jsx";
@@ -6,73 +6,118 @@ import Inventory from "../components/Inventory.jsx";
 import EquipmentItems from "../components/EquipmentItems.jsx";
 import AllUsers from "../components/AllUsers.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {clearGeneratedItems, setInventory, setGeneratedItems} from "../features/itemsSlice.jsx";
+import {clearGeneratedItems, setGeneratedItems, setFightEquipment} from "../features/itemsSlice.jsx";
+import {setModal, setMoney} from "../features/userSlice.jsx";
+import Modal from "../components/Modal.jsx";
+import {useNavigate} from "react-router-dom";
+import {setPlayer1, setPlayer2} from "../features/GameSlice.jsx";
 
 
 const Home = () => {
 
     const dispatch = useDispatch()
-    const inventory = useSelector(state => state.items.inventory)
+    const navigate = useNavigate()
+    const token = useSelector(state => state.user.token)
+    const price = useSelector(state => state.items.itemsGenerationPrice)
+    const modal = useSelector(state => state.user.modal)
+    const username = useSelector(state => state.user.username)
+    const sender = useSelector(state => state.request.sender)
+    const receiver = useSelector(state => state.request.receiver)
 
     useEffect(() => {
-
-        const options = {
-            method: "GET",
-            headers: {
-                "content-type": "application/json",
-                "authorization": localStorage.getItem('token')
-            },
-            body: null
-        }
-
-        fetch('http://localhost:8000/getInventory', options)
-            .then(res => res.json())
-            .then(data => {
-                dispatch(setInventory(data.data))
-            })
-
-        // fetch('http://localhost:8000/getUser', options)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         dispatch(getInventory(data.data))
-        //     })
-
-
         console.warn('Observe items generation')
 
-        socket().on('generatedWeapon', (weapon) => {
-            console.log('  WEAPON  effects:', JSON.stringify(weapon.effects))
-            dispatch(setGeneratedItems(weapon))
+        socket().emit('getEquipment', ({token}))
+        socket().on('equipment', (equipment) => {
+            dispatch(setFightEquipment(equipment))
         })
 
-        socket().on('generatedArmour', (armour) => {
-            console.log(' ARMOUR   effects:', JSON.stringify(armour.effects))
-            dispatch(setGeneratedItems(armour))
+        socket().on('acceptedGameRequest', (data) => {
+            console.log('data from accepted game request', data)
+            navigate("/game")
+            joinGame(sender, receiver)
         })
 
-        socket().on('generatedPotion', (potion) => {
-            dispatch(setGeneratedItems(potion))
+        const joinGame = (sender, receiver) => {
+            socket().emit('joinGame', sender, receiver)
+        }
+
+        console.log('sender', sender)
+        console.log('receiver', receiver)
+
+        socket().on('declinedGameRequest', (message) => {
+            console.log('message from declined game request', message)
         })
 
+        socket().on('StartGameData', (gameData) => {
+            console.log('StartGameData', gameData)
+            dispatch(setPlayer1(gameData[0]))
+            dispatch(setPlayer2(gameData[1]))
 
-
+        })
 
         return () => {
             console.warn('Cleanup on component destroy')
-            socket().off('generatedWeapon')
-            socket().off('generatedArmour')
-            socket().off('generatedPotion')
+            socket().off('generatedItems')
             socket().off('generatedDefaultWeapon')
-
         }
     }, [])
 
 
     const generateItems = () => {
+        console.log('generate items clicked')
         dispatch(clearGeneratedItems())
-        socket().emit('generateWeapon')
-        socket().emit('generateArmour')
-        socket().emit('generatePotion')
+        // socket().emit('getUserMoney', ({token}))
+        socket().emit('generateItems', ({token, price}))
+        socket().on('itemsGenerated', (data) => {
+            console.log(' GENERATED ITEMS:', data.items)
+            console.log(' GENERATED FROM BACK:', data)
+            dispatch(setGeneratedItems(data.items))
+            dispatch(setMoney(data.updatedMoney))
+        })
+    }
+
+    const userEquipment = useSelector(state => state.items.fightEquipment)
+    const senderId = useSelector(state => state.request.senderSocketId)
+
+    const userEquipmentRef = useRef(userEquipment);
+    userEquipmentRef.current = userEquipment
+
+
+    const acceptGame = (senderId, sender, receiver) => {
+        dispatch(setModal(false))
+        alert('You have 5 seconds to choose your equipment for the game')
+
+        setTimeout(() => {
+            const hasWeapon = userEquipmentRef.current.some(item => item.name === 'weapon')
+            console.log('userEquipment in acceptGame function', userEquipment);
+            console.log('hasWeapon', hasWeapon)
+
+            if (hasWeapon) {
+                socket().emit('acceptGameRequest', senderId, sender, receiver)
+                navigate("/game")
+                joinGame(sender, receiver)
+
+            } else {
+                alert('You have no weapon, so fight is cancelled')
+                socket().emit('declineGameRequest', senderId)
+            }
+
+        }, 5000)
+
+    }
+
+    useEffect(() => {
+        userEquipmentRef.current = userEquipment
+    }, [userEquipment])
+
+    const joinGame = (sender, receiver) => {
+        socket().emit('joinGame', sender, receiver)
+    }
+
+    const declineGame = () => {
+        dispatch(setModal(false))
+        socket().emit('declineGameRequest', senderId)
     }
 
 
@@ -82,6 +127,15 @@ const Home = () => {
     return (
 
         <div className="flex flex-col min-h-screen bg-cover bg-[url('./assets/31.jpg')] ">
+            {
+                modal &&
+                <Modal
+                    acceptGame={acceptGame}
+                    declineGame={declineGame}
+                    joinGame={joinGame}
+                />
+            }
+
 
             <Navbar/>
             <div className="flex p-2">

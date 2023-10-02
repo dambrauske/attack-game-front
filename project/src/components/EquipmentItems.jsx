@@ -4,9 +4,11 @@ import {useSelector} from "react-redux";
 
 const EquipmentItems = () => {
 
-    const potion = useSelector(state => state.items.potion)
-    const weapon = useSelector(state => state.items.weapon)
-    const armour = useSelector(state => state.items.armour)
+    const fightEquipment = useSelector(state => state.items.fightEquipment)
+    const armour = fightEquipment.find(item => item.name === 'armour')
+    const potion = fightEquipment.find(item => item.name === 'potion')
+    const weapon = fightEquipment.find(item => item.name === 'weapon')
+
 
     return (
         <div className="flex flex-col gap-4 items-center">
