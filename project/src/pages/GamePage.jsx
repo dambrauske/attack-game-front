@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Navbar from "../components/Navbar.jsx";
 import PlayerCard from "../components/PlayerCard.jsx";
 import GameInfo from "../components/GameInfo.jsx";
@@ -9,33 +9,20 @@ import {setLoggedInUsers} from "../features/userSlice.jsx";
 
 const GamePage = () => {
 
-    const dispatch = useDispatch()
     const player1 = useSelector(state => state.game.player1)
     const player2 = useSelector(state => state.game.player2)
 
-    console.log('player1', JSON.stringify(player1))
-    console.log('player2', JSON.stringify(player2))
 
-    // useEffect(() => {
-    //     socket().emit('getLoggedInUsers')
-    //     socket().on('loggedInUsers', (loggedInUsers) => {
-    //         dispatch(setLoggedInUsers(loggedInUsers))
-    //     })
-    //
-    // }, [])
+    const player1Ref = useRef(player1);
+    player1Ref.current = player1
 
+    const player2Ref = useRef(player2);
+    player2Ref.current = player2
 
-    // useEffect(() => {
-    //
-    //     socket().emit('gameData');
-    //
-    //     socket().on('StartGameData', (data) => {
-    //         console.log('data from game', data)
-    //         dispatch(setPlayer1(data[0]))
-    //         dispatch(setPlayer2(data[1]))
-    //     })
-    //
-    // })
+    useEffect(() => {
+        player1Ref.current = player1
+        player2Ref.current = player2
+    }, [player1, player2])
 
     return (
         <div className="flex flex-col min-h-screen bg-cover bg-[url('./assets/31.jpg')] ">

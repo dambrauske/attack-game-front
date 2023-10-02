@@ -10,7 +10,7 @@ import {clearGeneratedItems, setGeneratedItems, setFightEquipment} from "../feat
 import {setModal, setMoney} from "../features/userSlice.jsx";
 import Modal from "../components/Modal.jsx";
 import {useNavigate} from "react-router-dom";
-import {setPlayer1, setPlayer2} from "../features/GameSlice.jsx";
+import {setLost, setPlayer1, setPlayer2, setWon} from "../features/GameSlice.jsx";
 
 
 const Home = () => {
@@ -64,8 +64,6 @@ const Home = () => {
         // socket().emit('getUserMoney', ({token}))
         socket().emit('generateItems', ({token, price}))
         socket().on('itemsGenerated', (data) => {
-            console.log(' GENERATED ITEMS:', data.items)
-            console.log(' GENERATED FROM BACK:', data)
             dispatch(setGeneratedItems(data.items))
             dispatch(setMoney(data.updatedMoney))
         })
@@ -81,11 +79,12 @@ const Home = () => {
     const acceptGame = (senderId, sender, receiver) => {
         dispatch(setModal(false))
         alert('You have 5 seconds to choose your equipment for the game')
+        dispatch(setLost(''))
+        dispatch(setWon(''))
 
         setTimeout(() => {
             const hasWeapon = userEquipmentRef.current.some(item => item.name === 'weapon')
-            console.log('userEquipment in acceptGame function', userEquipment);
-            console.log('hasWeapon', hasWeapon)
+
 
             if (hasWeapon) {
                 socket().emit('acceptGameRequest', senderId, sender, receiver)

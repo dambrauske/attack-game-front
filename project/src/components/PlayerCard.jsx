@@ -5,7 +5,6 @@ import EquipmentItemInFight from "./EquipmentItemInFight.jsx";
 const PlayerCard = ({user}) => {
 
 
-    console.warn('USER INSIDE PLAYER CARD', JSON.stringify(user))
 
 
     return (

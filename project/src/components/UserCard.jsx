@@ -2,6 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import socket from "../socket.jsx";
 import {setReceiverUsername, setSenderSocketId, setSenderUsername} from "../features/requestSlice.jsx";
+import {setLost, setWon} from "../features/GameSlice.jsx";
 
 const UserCard = ({user}) => {
 
@@ -9,6 +10,8 @@ const UserCard = ({user}) => {
     const userEquipment = useSelector(state => state.items.fightEquipment)
     const dispatch = useDispatch()
     const requestToPlay = (targetSocketId, sender, receiver) => {
+        dispatch(setLost(''))
+        dispatch(setWon(''))
 
         const hasWeapon = userEquipment.some(item => item.name === 'weapon');
 
