@@ -7,7 +7,7 @@ import EquipmentItems from "../components/EquipmentItems.jsx";
 import AllUsers from "../components/AllUsers.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {clearGeneratedItems, setGeneratedItems, setFightEquipment} from "../features/itemsSlice.jsx";
-import {setModal, setMoney} from "../features/userSlice.jsx";
+import {setLoggedInUsers, setModal, setMoney} from "../features/userSlice.jsx";
 import Modal from "../components/Modal.jsx";
 import {useNavigate} from "react-router-dom";
 import {setLost, setPlayer1, setPlayer2, setWon} from "../features/GameSlice.jsx";
@@ -48,11 +48,17 @@ const Home = () => {
 
         })
 
+        socket().on('loggedInUsers', (loggedInUsers) => {
+            console.log('loggedInUsers', loggedInUsers)
+            dispatch(setLoggedInUsers(loggedInUsers))
+        })
+
         return () => {
-            console.warn('Cleanup on component destroy')
-            socket().off('generatedItems')
-            socket().off('generatedDefaultWeapon')
+            socket().off('equipment')
+            socket().off('declinedGameRequest')
+            socket().off('StartGameData')
         }
+
     }, [])
 
 

@@ -13,11 +13,14 @@ import GamePage from "./pages/GamePage.jsx";
 function App() {
 
     const dispatch = useDispatch()
+    const token = localStorage.getItem('token')
 
     useEffect(() => {
         socket().on('images', (images) => {
             dispatch(setImages(images))
         })
+
+        socket().emit('userLoggedIn', token)
 
         socket().on('loggedInUsers', (loggedInUsers) => {
             dispatch(setLoggedInUsers(loggedInUsers))

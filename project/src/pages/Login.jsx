@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -9,27 +9,33 @@ import {
     setUserImage,
     setUsername
 } from "../features/userSlice.jsx";
-import Images from "../components/Images.jsx";
-import {setFightEquipment, setWeapon} from "../features/itemsSlice.jsx";
 import socket from "../socket.jsx";
+import ImageCard from "../components/ImageCard.jsx";
 
 const Login = () => {
 
-    const [error, setError] = useState('')
-    const selectedImage = useSelector(state => state.user.image)
-
+    const [error, setError] = useState(undefined)
 
     const usernameRef = useRef()
     const passwordRef = useRef()
-
+    const images = useSelector(state => state.user.images)
+    const selectedImage = useSelector(state => state.user.image)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    const selectImage = (image) => {
+        console.log('image clicked')
+        dispatch(setUserImage(image))
+    }
+    console.log('selectedImage', selectedImage)
     const login = async () => {
+        console.log('login clicked')
+        setError(undefined)
 
         const username = usernameRef.current?.value
         const password = passwordRef.current?.value
 
-        if (selectedImage === '') return setError('Please select your warrior')
+        if (!selectedImage) return setError('Please select your warrior')
 
         if (username.length === 0) return setError('Username cannot be blank')
         if (username.length < 4) return setError('Username should be at least 4 characters long')
@@ -37,7 +43,8 @@ const Login = () => {
         if (password.length === 0) return setError('Password cannot be blank')
         if (password.length < 6) return setError('Password should be at least 6 characters long')
 
-        setError('')
+
+        console.log('error', error)
 
         const user = {
             username,
@@ -61,13 +68,10 @@ const Login = () => {
             dispatch(setUsername(data.data.username))
             dispatch(setUserImage(data.data.image))
             dispatch(setMoney(data.data.money))
-            navigate('/home')
-            dispatch(clearLoggedInUsers())
             socket().emit('userLogin', (data.data.token))
-
-
-        } catch (error) {
-            console.log(error)
+            navigate('/home')
+        } catch (e) {
+            console.log(e)
         }
 
     }
@@ -76,7 +80,15 @@ const Login = () => {
     return (
         <div className="bg-cover bg-[url('./assets/31.jpg')] h-screen flex justify-center items-center">
             <div className="flex flex-col gap-4 bg-slate-950 p-4 pt-10 rounded-l w-6/12 items-center shadow-2xl	">
-                <Images/>
+                <div className="flex gap-4 flex-wrap justify-center">
+                    {images.map((image, i) => (
+                        <ImageCard
+                            onClick={() =>selectImage(image)}
+                            image={image}
+                            key={i}/>
+                    ))}
+                </div>
+
                 <div className="flex flex-col gap-6 p-4 rounded justify-center items-center">
                     <input
                         className="bg-slate-700 text-slate-100 placeholder-slate-500 p-1 rounded outline-none"
@@ -91,7 +103,7 @@ const Login = () => {
                         className="w-2/3 bg-purple-800 text-indigo-200 font-bold uppercase rounded hover:bg-purple-700 p-1">Start game
                     </button>
 
-                    <div className="h-6 flex justify-center items-center text-center">
+                    <div className="h-2 flex justify-center items-center text-center">
                         {error &&
                             <div
                                 className={"text-red-600"}

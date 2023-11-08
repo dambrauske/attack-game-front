@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 
-const ImageCard = ({image, onClick, index}) => {
+const ImageCard = ({image, onClick}) => {
 
     const selectedImage = useSelector(state => state.user.image)
 

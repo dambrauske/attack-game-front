@@ -33,6 +33,10 @@ const InventoryItem = ({item}) => {
             console.log('data from sockets inventory', data)
                 dispatch(setInventory(data))
         })
+
+        return () => {
+            socket().off('updatedInventory')
+        }
     }
 
     const takeToEquipment = (item) => {
@@ -44,9 +48,11 @@ const InventoryItem = ({item}) => {
             dispatch(setFightEquipment(data))
         })
 
-    }
+        return () => {
+            socket().off('updatedEquipment')
+        }
 
-    console.log('fightEquipment', fightEquipment)
+    }
 
 
     return (

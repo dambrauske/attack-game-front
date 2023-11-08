@@ -11,10 +11,13 @@ const AllUsers = () => {
     const users = useSelector(state => state.user.loggedInUsers)
 
     useEffect(() => {
-        socket().emit('getLoggedInUsers')
         socket().on('loggedInUsers', (loggedInUsers) => {
             dispatch(setLoggedInUsers(loggedInUsers))
         })
+
+        return () => {
+            socket().off('loggedInUsers')
+        }
 
     }, [])
 

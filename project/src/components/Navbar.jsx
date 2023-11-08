@@ -15,14 +15,10 @@ const Navbar = () => {
     const token = useSelector(state => state.user.token)
 
     const logout = () => {
-        navigate('/')
+        socket().emit('userLoggedOut', (token))
         localStorage.clear()
         dispatch(clearGeneratedItems())
-        socket().emit('userLoggedOut', (token))
-        socket().on('loggedInUsers', (loggedInUsers) => {
-            dispatch(setLoggedInUsers(loggedInUsers))
-        })
-
+        navigate('/')
     }
 
     return (

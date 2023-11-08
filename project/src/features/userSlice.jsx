@@ -8,7 +8,7 @@ export const userSlice = createSlice({
         name: "user",
         initialState: {
             username,
-            image,
+            image: image ? image : undefined,
             money,
             token,
             images: [],
