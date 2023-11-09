@@ -11,7 +11,7 @@ import {setLoggedInUsers, setModal, setMoney} from "../features/userSlice.jsx";
 import Modal from "../components/Modal.jsx";
 import {useNavigate} from "react-router-dom";
 import {setLost, setPlayer1, setPlayer2, setWon} from "../features/GameSlice.jsx";
-
+import {setReceiver, setSender, setSenderMessage} from "../features/requestSlice.jsx";
 
 const Home = () => {
 
@@ -20,12 +20,11 @@ const Home = () => {
     const token = useSelector(state => state.user.token)
     const price = useSelector(state => state.items.itemsGenerationPrice)
     const modal = useSelector(state => state.user.modal)
+    const inventory = useSelector(state => state.game.inventory)
 
+    console.log(inventory)
 
     useEffect(() => {
-
-        console.warn('Observe items generation')
-
         socket().emit('getEquipment', ({token}))
         socket().on('equipment', (equipment) => {
             dispatch(setFightEquipment(equipment))
@@ -33,30 +32,52 @@ const Home = () => {
 
         socket().on('acceptedGameRequest', (data) => {
             console.log('data from accepted game request', data)
-            navigate("/game")
-            socket().emit('joinGame', data.sender, data.receiver)
+            dispatch(setPlayer1(data.player1))
+            dispatch(setPlayer2(data.player2))
         })
 
         socket().on('declinedGameRequest', (message) => {
             console.log('message from declined game request', message)
         })
 
-        socket().on('StartGameData', (gameData) => {
-            console.log('StartGameData', gameData)
-            dispatch(setPlayer1(gameData[0]))
-            dispatch(setPlayer2(gameData[1]))
-
-        })
 
         socket().on('loggedInUsers', (loggedInUsers) => {
             console.log('loggedInUsers', loggedInUsers)
             dispatch(setLoggedInUsers(loggedInUsers))
         })
 
+        socket().on('gameRequest', (data) => {
+            console.log('Received game request:', data)
+            console.log('Received game request sender:', data.sender)
+            dispatch(setModal(true))
+            dispatch(setSender(data.sender))
+            dispatch(setReceiver(data.receiver))
+            dispatch(setSenderMessage(data.message))
+        })
+
+        socket().on('otherUserAcceptedGameRequest', (data) => {
+            console.log('Received game accepted', data)
+            if (data.data.message === "Game accepted") {
+                dispatch(setSender(data.data.sender))
+                dispatch(setReceiver(data.data.receiver))
+                alert(data.data.message)
+                dispatch(setPlayer1(data.player1))
+                dispatch(setPlayer2(data.player2))
+                setTimeout(() => {
+                    navigate('/game')
+                }, 5000)
+            }
+
+        })
+
         return () => {
             socket().off('equipment')
             socket().off('declinedGameRequest')
             socket().off('StartGameData')
+            socket().off('loggedInUsers')
+            socket().off('acceptedGameRequest')
+            socket().off('gameRequest')
+            socket().off('otherUserAcceptedGameRequest')
         }
 
     }, [])
@@ -65,7 +86,6 @@ const Home = () => {
     const generateItems = () => {
         console.log('generate items clicked')
         dispatch(clearGeneratedItems())
-        // socket().emit('getUserMoney', ({token}))
         socket().emit('generateItems', ({token, price}))
         socket().on('itemsGenerated', (data) => {
             dispatch(setGeneratedItems(data.items))
@@ -74,13 +94,13 @@ const Home = () => {
     }
 
     const userEquipment = useSelector(state => state.items.fightEquipment)
-    const senderId = useSelector(state => state.request.senderSocketId)
 
     const userEquipmentRef = useRef(userEquipment);
     userEquipmentRef.current = userEquipment
 
 
-    const acceptGame = (senderId, sender, receiver) => {
+    const acceptGame = (sender, receiver) => {
+        console.log(sender, receiver)
         dispatch(setModal(false))
         alert('You have 5 seconds to choose your equipment for the game')
         dispatch(setLost(''))
@@ -89,15 +109,15 @@ const Home = () => {
         setTimeout(() => {
             const hasWeapon = userEquipmentRef.current.some(item => item.name === 'weapon')
 
-
             if (hasWeapon) {
-                socket().emit('acceptGameRequest', senderId, sender, receiver)
-                navigate("/game")
-                joinGame(sender, receiver)
+                socket().emit('acceptGameRequest', sender, receiver)
+                setTimeout(() => {
+                    navigate("/game")
+                }, 5000)
 
             } else {
                 alert('You have no weapon, so fight is cancelled')
-                socket().emit('declineGameRequest', senderId)
+                socket().emit('declineGameRequest', receiver)
             }
 
         }, 5000)
@@ -108,18 +128,11 @@ const Home = () => {
         userEquipmentRef.current = userEquipment
     }, [userEquipment])
 
-    const joinGame = (sender, receiver) => {
-        socket().emit('joinGame', sender, receiver)
-    }
 
-    const declineGame = () => {
+    const declineGame = (sender) => {
         dispatch(setModal(false))
-        socket().emit('declineGameRequest', senderId)
+        socket().emit('declineGameRequest', sender)
     }
-
-
-    // console.log(weaponFromBack) // causes re-renders!
-
 
     return (
 
@@ -129,10 +142,8 @@ const Home = () => {
                 <Modal
                     acceptGame={acceptGame}
                     declineGame={declineGame}
-                    joinGame={joinGame}
                 />
             }
-
 
             <Navbar/>
             <div className="flex p-2">
@@ -148,14 +159,12 @@ const Home = () => {
                             </button>
                         </div>
 
-
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2 rounded p-2">
                         <Inventory/>
                         <EquipmentItems/>
                     </div>
                 </div>
-
 
                 <div className="bg-slate-800 rounded text-slate-100 p-2 w-1/3 h-full">
                     <div>users to play with</div>

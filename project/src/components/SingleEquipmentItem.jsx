@@ -28,8 +28,8 @@ const SingleEquipmentItem = ({item}) => {
         <div
             onMouseEnter={onHover}
             onMouseLeave={onLeaveHover}
-            className="relative flex gap-4 ">
-            <img className=" w-16 h-16 object-contain" src={item.image} alt=""/>
+            className="relative flex gap-4 p-2">
+            <img className="w-14 h-14 object-contain" src={item.image} alt=""/>
             <div className="felx flex-col text-sm leading-tight	">
                 <div>
                     {
@@ -39,37 +39,30 @@ const SingleEquipmentItem = ({item}) => {
                 </div>
                 <div>
                     {
-                        item.hp &&
-                        <div>Restores HP: {item.hp}</div>
+                        item.damage &&
+                        <div>Damage: {item.damage}</div>
                     }
                 </div>
                 <div>
                     {
-                        item.effects && item.effects.length > 0 &&
-                        <div className="flex flex-col">
-                            <div>Effects:</div>
-                            <ul className="list-disc ml-4">
-                                {item.effects.map((effect, i) => (
-                                    <li
-                                        key={i}
-                                    >{effect}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
+                        item.hp &&
+                        <div>Restores HP: {item.hp}</div>
                     }
                 </div>
 
                 <div>
                     {
                         item.generateGold &&
-                        <div>Generate gold: {item.generateGold}</div>
+                        <div>Generates gold: {item.generateGold}</div>
+                    }
+                </div>
+                <div>
+                    {
+                        item.armour &&
+                        <div>Armour: {item.armour}</div>
                     }
                 </div>
             </div>
-
-
 
             {
                 showOnHover &&

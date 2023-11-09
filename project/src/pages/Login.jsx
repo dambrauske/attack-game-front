@@ -11,6 +11,7 @@ import {
 } from "../features/userSlice.jsx";
 import socket from "../socket.jsx";
 import ImageCard from "../components/ImageCard.jsx";
+import {setFightEquipment} from "../features/itemsSlice.jsx";
 
 const Login = () => {
 

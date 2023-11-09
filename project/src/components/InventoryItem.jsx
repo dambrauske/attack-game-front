@@ -42,7 +42,6 @@ const InventoryItem = ({item}) => {
     const takeToEquipment = (item) => {
         console.log('take to equipment clicked, item:', item)
         socket().emit('addToEquipment', ({token, item}))
-
         socket().on('updatedEquipment', (data) => {
             console.log('data from updated equipment', data)
             dispatch(setFightEquipment(data))
@@ -69,7 +68,7 @@ const InventoryItem = ({item}) => {
             }
 
             {
-                showOnHover &&
+                showOnHover && item.default === false &&
                 <div
                     onClick={(event) => {
                         event.stopPropagation()

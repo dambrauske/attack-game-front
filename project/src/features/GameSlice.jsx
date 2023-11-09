@@ -3,11 +3,11 @@ import {createSlice} from "@reduxjs/toolkit";
 export const gameSlice = createSlice({
         name: "game",
         initialState: {
-            player1: {},
-            player2: {},
-            userTurn: '',
-            lost: '',
-            won: ''
+            player1: undefined,
+            player2: undefined,
+            userTurn: undefined,
+            lost: undefined,
+            won: undefined,
         }, reducers: {
             setPlayer1: (state, action) => {
                 state.player1 = action.payload

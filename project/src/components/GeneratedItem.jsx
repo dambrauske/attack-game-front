@@ -58,13 +58,7 @@ const GeneratedItem = ({item}) => {
                         item.hp &&
                         <div> + {item.hp} hp</div>
                     }
-                    {
-                        item.effects && item.effects.map((effect, i) => (
-                            <div
-                            key={i}
-                            >{effect}</div>
-                        ))
-                    }
+
                 </div>
             </div>
 

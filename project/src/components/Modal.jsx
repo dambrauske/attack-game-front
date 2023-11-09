@@ -2,11 +2,10 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {setModal} from "../features/userSlice.jsx";
 
-const Modal = ({acceptGame, declineGame, }) => {
+const Modal = ({acceptGame, declineGame}) => {
 
     const dispatch = useDispatch()
     const sender = useSelector(state => state.request.sender)
-    const senderId = useSelector(state => state.request.senderSocketId)
     const username = useSelector(state => state.user.username)
 
 
@@ -24,7 +23,7 @@ const Modal = ({acceptGame, declineGame, }) => {
                 </div>
                 <div className="flex gap-8">
                     <button
-                        onClick={() => acceptGame(senderId, sender, username)}
+                        onClick={() => acceptGame(sender, username)}
                         className={"bg-purple-800 px-2 py-1 rounded w-20 self-center hover:bg-purple-600 text-white"}>Accept
                     </button>
                     <button

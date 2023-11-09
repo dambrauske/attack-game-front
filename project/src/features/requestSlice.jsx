@@ -5,18 +5,15 @@ export const requestSlice = createSlice({
         initialState: {
             sender: undefined,
             receiver: undefined,
-            senderSocketId: undefined,
             senderMessage: undefined,
         }, reducers: {
-            setSenderUsername: (state, action) => {
+            setSender: (state, action) => {
                 state.sender = action.payload
             },
-            setReceiverUsername: (state, action) => {
+            setReceiver: (state, action) => {
                 state.receiver = action.payload
             },
-            setSenderSocketId: (state, action) => {
-                state.senderSocketId = action.payload
-            },
+
             setSenderMessage: (state, action) => {
                 state.senderMessage = action.payload
             },
@@ -26,9 +23,8 @@ export const requestSlice = createSlice({
 )
 export const {
     setSenderMessage,
-    setSenderSocketId,
-    setSenderUsername,
-    setReceiverUsername,
+    setSender,
+    setReceiver,
 } = requestSlice.actions
 
 export default requestSlice.reducer

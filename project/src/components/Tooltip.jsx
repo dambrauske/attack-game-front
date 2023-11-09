@@ -30,24 +30,6 @@ const Tooltip = ({item}) => {
                 }
 
             </div>
-            <div>
-                {
-                    item.effects && item.effects.length > 0 &&
-                    <div className="flex flex-col">
-                        <div>Effects:</div>
-                        <ul className="list-disc ml-4">
-                            {item.effects.map((effect, i) => (
-                                <li
-                                    key={i}
-                                >{effect}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                }
-            </div>
-
         </div>
     );
 };
