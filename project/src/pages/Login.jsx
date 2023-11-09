@@ -5,7 +5,7 @@ import {
     clearLoggedInUsers,
     setLoggedInUsers,
     setMoney,
-    setToken,
+    setToken, setUserId,
     setUserImage,
     setUsername
 } from "../features/userSlice.jsx";
@@ -67,6 +67,7 @@ const Login = () => {
             console.log(data)
             dispatch(setToken(data.data.token))
             dispatch(setUsername(data.data.username))
+            dispatch(setUserId(data.data.userId))
             dispatch(setUserImage(data.data.image))
             dispatch(setMoney(data.data.money))
             socket().emit('userLogin', (data.data.token))

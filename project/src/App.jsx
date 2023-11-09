@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import {useEffect} from "react";
 import {setImages, setLoggedInUsers} from "./features/userSlice.jsx";
 import GamePage from "./pages/GamePage.jsx";
+import {setPlayer1, setPlayer2} from "./features/GameSlice.jsx";
 
 function App() {
 
@@ -24,9 +25,17 @@ function App() {
             dispatch(setLoggedInUsers(loggedInUsers))
         })
 
+        socket().on('potionUsed', (data) => {
+            console.log('potionUsed DATA:')
+            console.log(data)
+            dispatch(setPlayer1(data.player1))
+            dispatch(setPlayer2(data.player2))
+        })
+
        return () => {
             socket().off('images')
             socket().off('loggedInUsers')
+            socket().off('potionUsed')
        }
 
     }, [])

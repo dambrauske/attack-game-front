@@ -2,12 +2,14 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const token = localStorage.getItem('token')
 const username = localStorage.getItem('username')
+const userId = localStorage.getItem('userId')
 const image = localStorage.getItem('image')
 const money = localStorage.getItem('money')
 export const userSlice = createSlice({
         name: "user",
         initialState: {
             username,
+            userId,
             image: image ? image : undefined,
             money,
             token,
@@ -22,6 +24,10 @@ export const userSlice = createSlice({
             setUsername: (state, action) => {
                 state.username = action.payload
                 localStorage.setItem('username', state.username)
+            },
+            setUserId: (state, action) => {
+                state.userId = action.payload
+                localStorage.setItem('userId', state.userId)
             },
             setLoggedInUsers: (state, action) => {
                 state.loggedInUsers = action.payload
@@ -56,6 +62,7 @@ export const {
     setLoggedInUsers,
     setModal,
     clearLoggedInUsers,
+    setUserId,
 } = userSlice.actions
 
 export default userSlice.reducer

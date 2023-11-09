@@ -11,51 +11,16 @@ const GameInfo = () => {
     const player1 = useSelector(state => state.game.player1)
     const player2 = useSelector(state => state.game.player2)
     const userUsername = useSelector(state => state.user.username)
-    const loser = useSelector(state => state.game.lost)
     const winner = useSelector(state => state.game.won)
 
     const playerTurn = player1.attackTurn
 
-
-    useEffect(() => {
-        socket().on('attackData', (data) => {
-            console.log('ATTACK DATA:');
-            console.log(data)
-            dispatch(setPlayer1(data[0]))
-            dispatch(setPlayer2(data[1]))
-
-            if (data[0].hp <= 0) {
-                    dispatch(setLost(data[0].username))
-                    dispatch(setWon(data[1].username))
-            }
-
-            if (data[1].hp <= 0) {
-                dispatch(setLost(data[1].username))
-                dispatch(setWon(data[0].username))
-            }
-
-
-            if (playerTurn === userUsername) {
-                console.log('It is your turn to attack.')
-            } else {
-                console.log('It is not your turn to attack.');
-            }
-
-        });
-
-        return () => {
-            socket().off('attackData');
-        };
-    }, []);
-
-    const attack = () => {
+    const attack = (player1, player2) => {
         console.log('attack clicked')
-
         if (playerTurn === userUsername) {
             socket().emit('sendAttackData', player1, player2)
         }
-
-    };
+    }
 
     const backToHome = () => {
         socket().emit('leaveRoom', 'gameRoom')
@@ -64,12 +29,17 @@ const GameInfo = () => {
 
     return (
         <div className="flex flex-col gap-8 text-white items-center justify-center">
-            <div>{playerTurn} turn</div>
-            <button
-                onClick={attack}
-                className="bg-purple-800 px-4 py-2 tracking-wider rounded hover:bg-purple-600"
-            >ATTACK
-            </button>
+            { !winner &&
+                <div>{playerTurn} turn</div>
+            }
+            {
+                playerTurn === userUsername && !winner &&
+                <button
+                    onClick={() => attack(player1, player2)}
+                    className="bg-purple-800 px-4 py-2 tracking-wider rounded hover:bg-purple-600">
+                    ATTACK</button>
+            }
+
             <div className="h-10">
                 {
                     winner &&
@@ -78,7 +48,8 @@ const GameInfo = () => {
                         <button
                             onClick={backToHome}
                             className="bg-purple-950 px-3 py-1 rounded hover:bg-purple-800 text-white text-left"
-                        >Go back to main page</button>
+                        >Go back to main page
+                        </button>
                     </div>
                 }
             </div>

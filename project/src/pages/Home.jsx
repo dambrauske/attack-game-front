@@ -22,11 +22,11 @@ const Home = () => {
     const modal = useSelector(state => state.user.modal)
     const inventory = useSelector(state => state.game.inventory)
 
-    console.log(inventory)
 
     useEffect(() => {
         socket().emit('getEquipment', ({token}))
         socket().on('equipment', (equipment) => {
+            console.log(equipment)
             dispatch(setFightEquipment(equipment))
         })
 
@@ -47,8 +47,6 @@ const Home = () => {
         })
 
         socket().on('gameRequest', (data) => {
-            console.log('Received game request:', data)
-            console.log('Received game request sender:', data.sender)
             dispatch(setModal(true))
             dispatch(setSender(data.sender))
             dispatch(setReceiver(data.receiver))
