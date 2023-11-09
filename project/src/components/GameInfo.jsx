@@ -1,18 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import React from 'react';
+import {useSelector} from "react-redux";
 import socket from "../socket.jsx";
-import {setLost, setPlayer1, setPlayer2, setWon} from "../features/GameSlice.jsx";
 import {useNavigate} from "react-router-dom";
 
 const GameInfo = () => {
 
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const player1 = useSelector(state => state.game.player1)
     const player2 = useSelector(state => state.game.player2)
     const userUsername = useSelector(state => state.user.username)
     const winner = useSelector(state => state.game.won)
-
     const playerTurn = player1.attackTurn
 
     const attack = (player1, player2) => {

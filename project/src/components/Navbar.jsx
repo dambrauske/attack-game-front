@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {clearGeneratedItems} from "../features/itemsSlice.jsx";
 import socket from "../socket.jsx";
-import {setLoggedInUsers} from "../features/userSlice.jsx";
 
 const Navbar = () => {
 

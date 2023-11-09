@@ -1,9 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    clearLoggedInUsers,
-    setLoggedInUsers,
     setMoney,
     setToken, setUserId,
     setUserImage,
@@ -11,12 +9,10 @@ import {
 } from "../features/userSlice.jsx";
 import socket from "../socket.jsx";
 import ImageCard from "../components/ImageCard.jsx";
-import {setFightEquipment} from "../features/itemsSlice.jsx";
 
 const Login = () => {
 
     const [error, setError] = useState(undefined)
-
     const usernameRef = useRef()
     const passwordRef = useRef()
     const images = useSelector(state => state.user.images)
@@ -25,12 +21,9 @@ const Login = () => {
     const dispatch = useDispatch()
 
     const selectImage = (image) => {
-        console.log('image clicked')
         dispatch(setUserImage(image))
     }
-    console.log('selectedImage', selectedImage)
     const login = async () => {
-        console.log('login clicked')
         setError(undefined)
 
         const username = usernameRef.current?.value
@@ -43,9 +36,6 @@ const Login = () => {
 
         if (password.length === 0) return setError('Password cannot be blank')
         if (password.length < 6) return setError('Password should be at least 6 characters long')
-
-
-        console.log('error', error)
 
         const user = {
             username,
@@ -75,7 +65,6 @@ const Login = () => {
         } catch (e) {
             console.log(e)
         }
-
     }
 
 

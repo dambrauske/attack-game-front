@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
-import Tooltip from "./Tooltip.jsx";
-import {setArmour, setPotion, setWeapon} from "../features/itemsSlice.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import socket from "../socket.jsx";
 
 const SingleEquipmentItem = ({item}) => {

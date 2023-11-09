@@ -1,22 +1,12 @@
 import React, {useState} from 'react';
 import Tooltip from "./Tooltip.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    setInventory,
-    setArmour,
-    setPotion,
-    setShowModal,
-    setWeapon,
-    setFightEquipment
-} from "../features/itemsSlice.jsx";
+import {setInventory, setFightEquipment} from "../features/itemsSlice.jsx";
 import socket from "../socket.jsx";
 
 const InventoryItem = ({item}) => {
-
     const dispatch = useDispatch()
     const token = useSelector(state => state.user.token)
-    const fightEquipment = useSelector(state => state.items.fightEquipment)
-
     const [showOnHover, setShowOnHover] = useState(false);
 
     const onHover = () => {
@@ -31,7 +21,7 @@ const InventoryItem = ({item}) => {
         socket().emit('deleteFromInventory', ({token, itemId}))
         socket().on('updatedInventory', (data) => {
             console.log('data from sockets inventory', data)
-                dispatch(setInventory(data))
+            dispatch(setInventory(data))
         })
 
         return () => {
@@ -50,7 +40,6 @@ const InventoryItem = ({item}) => {
         return () => {
             socket().off('updatedEquipment')
         }
-
     }
 
 

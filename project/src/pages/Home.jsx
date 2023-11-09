@@ -20,29 +20,23 @@ const Home = () => {
     const token = useSelector(state => state.user.token)
     const price = useSelector(state => state.items.itemsGenerationPrice)
     const modal = useSelector(state => state.user.modal)
-    const inventory = useSelector(state => state.game.inventory)
-
 
     useEffect(() => {
         socket().emit('getEquipment', ({token}))
         socket().on('equipment', (equipment) => {
-            console.log(equipment)
             dispatch(setFightEquipment(equipment))
         })
 
         socket().on('acceptedGameRequest', (data) => {
-            console.log('data from accepted game request', data)
             dispatch(setPlayer1(data.player1))
             dispatch(setPlayer2(data.player2))
         })
 
         socket().on('declinedGameRequest', (message) => {
-            console.log('message from declined game request', message)
+            alert(message)
         })
 
-
         socket().on('loggedInUsers', (loggedInUsers) => {
-            console.log('loggedInUsers', loggedInUsers)
             dispatch(setLoggedInUsers(loggedInUsers))
         })
 
@@ -54,7 +48,6 @@ const Home = () => {
         })
 
         socket().on('otherUserAcceptedGameRequest', (data) => {
-            console.log('Received game accepted', data)
             if (data.data.message === "Game accepted") {
                 dispatch(setSender(data.data.sender))
                 dispatch(setReceiver(data.data.receiver))
@@ -65,7 +58,6 @@ const Home = () => {
                     navigate('/game')
                 }, 5000)
             }
-
         })
 
         return () => {
@@ -82,7 +74,6 @@ const Home = () => {
 
 
     const generateItems = () => {
-        console.log('generate items clicked')
         dispatch(clearGeneratedItems())
         socket().emit('generateItems', ({token, price}))
         socket().on('itemsGenerated', (data) => {
@@ -93,12 +84,9 @@ const Home = () => {
 
     const userEquipment = useSelector(state => state.items.fightEquipment)
 
-    const userEquipmentRef = useRef(userEquipment);
+    const userEquipmentRef = useRef(userEquipment)
     userEquipmentRef.current = userEquipment
-
-
     const acceptGame = (sender, receiver) => {
-        console.log(sender, receiver)
         dispatch(setModal(false))
         alert('You have 5 seconds to choose your equipment for the game')
         dispatch(setLost(''))
@@ -142,7 +130,6 @@ const Home = () => {
                     declineGame={declineGame}
                 />
             }
-
             <Navbar/>
             <div className="flex p-2">
 

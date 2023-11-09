@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import UserCard from "./UserCard.jsx";
 import socket from "../socket.jsx";
-import {setFightEquipment} from "../features/itemsSlice.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {setLoggedInUsers} from "../features/userSlice.jsx";
 

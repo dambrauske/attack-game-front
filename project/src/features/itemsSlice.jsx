@@ -56,7 +56,6 @@ export const itemsSlice = createSlice({
                 localStorage.setItem('armour', JSON.stringify(state.armour))
             },
 
-
         }
     }
 )

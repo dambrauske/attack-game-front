@@ -23,13 +23,11 @@ const EquipmentItems = () => {
                             />
                         }
                     </div>
-
                     <div className="bg-slate-200 px-1 rounded text-black">weapon</div>
                 </div>
 
                 <div className="flex flex-col gap-2 items-center justify-between bg-slate-800 text-slate-100 rounded  p-2">
                     <div className="w-48 h-20">
-
                         {
                             armour &&
                             <SingleEquipmentItem
@@ -37,9 +35,7 @@ const EquipmentItems = () => {
                             />
                         }
                     </div>
-
                     <div className="bg-slate-200 px-1 rounded text-black">armour</div>
-
                 </div>
 
                 <div className="flex flex-col gap-2 items-center justify-between bg-slate-800 text-slate-100 rounded  p-2">
@@ -54,11 +50,8 @@ const EquipmentItems = () => {
                     </div>
 
                     <div className="bg-slate-200 px-1 rounded text-black">potion</div>
-
                 </div>
-
             </div>
-
         </div>
     );
 };

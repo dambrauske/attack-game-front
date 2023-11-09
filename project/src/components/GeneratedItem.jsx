@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {removeFromGeneratedItems, setInventory} from "../features/itemsSlice.jsx";
 import socket from "../socket.jsx";
-
 const GeneratedItem = ({item}) => {
 
     const dispatch = useDispatch()
@@ -10,11 +9,11 @@ const GeneratedItem = ({item}) => {
     const token = useSelector(state => state.user.token)
 
     const showModalOnHover = () => {
-        setShowModal(true);
+        setShowModal(true)
     }
 
     const hideModal = () => {
-        setShowModal(false);
+        setShowModal(false)
     }
 
     const takeToInventory = (item) => {

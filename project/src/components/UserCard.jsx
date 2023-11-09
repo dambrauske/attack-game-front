@@ -5,9 +5,6 @@ import {setReceiver, setSender} from "../features/requestSlice.jsx";
 import {setLost, setWon} from "../features/GameSlice.jsx";
 
 const UserCard = ({user}) => {
-
-    console.log('user', user)
-
     const currentUserUsername = useSelector(state => state.user.username)
     const userEquipment = useSelector(state => state.items.fightEquipment)
     const dispatch = useDispatch()

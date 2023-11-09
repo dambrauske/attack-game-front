@@ -2,25 +2,22 @@ import React, {useEffect} from 'react';
 import InventoryItem from "./InventoryItem.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import socket from "../socket.jsx";
-import {setGeneratedItems, setInventory} from "../features/itemsSlice.jsx";
+import {setInventory} from "../features/itemsSlice.jsx";
 
 const Inventory = () => {
-
     const inventory = useSelector(state => state.items.inventory)
     const token = useSelector(state => state.user.token)
     const dispatch = useDispatch()
 
-
     useEffect(() => {
-
         socket().emit('getInventory', ({token}))
         socket().on('inventory', (inventory) => {
             dispatch(setInventory(inventory))
         })
 
         return () => {
-            socket().off('inventory');
-        };
+            socket().off('inventory')
+        }
 
     }, [])
 

@@ -18,7 +18,7 @@ const PlayerCard = ({user}) => {
             </div>
             <div className="w-full h-6 border rounded">
                 <div
-                    style={{width: `${hp}%`}}
+                    style={{width: `${hp <= 0? 0 : hp}%`}}
                     className="h-full rounded bg-green-500"></div>
             </div>
 

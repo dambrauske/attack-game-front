@@ -17,7 +17,6 @@ export const requestSlice = createSlice({
             setSenderMessage: (state, action) => {
                 state.senderMessage = action.payload
             },
-
         }
     }
 )
