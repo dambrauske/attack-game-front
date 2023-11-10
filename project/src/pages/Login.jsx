@@ -54,7 +54,6 @@ const Login = () => {
         try {
             const response = await fetch('http://localhost:8000/login', options)
             const data = await response.json()
-            console.log(data)
             dispatch(setToken(data.data.token))
             dispatch(setUsername(data.data.username))
             dispatch(setUserId(data.data.userId))
@@ -63,7 +62,7 @@ const Login = () => {
             socket().emit('userLogin', (data.data.token))
             navigate('/home')
         } catch (e) {
-            console.log(e)
+            console.error(e)
         }
     }
 

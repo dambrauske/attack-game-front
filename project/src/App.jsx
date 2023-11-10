@@ -5,7 +5,7 @@ import Home from "./pages/Home.jsx";
 import socket from "./socket.jsx";
 import {useDispatch} from "react-redux";
 import {useEffect} from "react";
-import {setImages, setLoggedInUsers, setMoney} from "./features/userSlice.jsx";
+import {setImages, setLoggedInUsers, setMoney,} from "./features/userSlice.jsx";
 import GamePage from "./pages/GamePage.jsx";
 import {setPlayer1, setPlayer2} from "./features/GameSlice.jsx";
 
@@ -25,17 +25,14 @@ function App() {
             dispatch(setLoggedInUsers(loggedInUsers))
         })
 
+
         socket().on('potionUsed', (data) => {
-            console.log('potionUsed DATA:')
-            console.log(data)
             dispatch(setPlayer1(data.player1))
             dispatch(setPlayer2(data.player2))
         })
 
 
         socket().on('winnerMoney', (money) => {
-            console.log('winnerMoney DATA:')
-            console.log(money)
             dispatch(setMoney(money))
         })
 

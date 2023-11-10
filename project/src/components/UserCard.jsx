@@ -9,7 +9,6 @@ const UserCard = ({user}) => {
     const userEquipment = useSelector(state => state.items.fightEquipment)
     const dispatch = useDispatch()
     const requestToPlay = (sender, receiver) => {
-        console.log('requestToPlay', sender, receiver)
         dispatch(setLost(''))
         dispatch(setWon(''))
 

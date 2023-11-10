@@ -20,7 +20,6 @@ const InventoryItem = ({item}) => {
     const deleteFromInventory = (itemId) => {
         socket().emit('deleteFromInventory', ({token, itemId}))
         socket().on('updatedInventory', (data) => {
-            console.log('data from sockets inventory', data)
             dispatch(setInventory(data))
         })
 
@@ -30,10 +29,8 @@ const InventoryItem = ({item}) => {
     }
 
     const takeToEquipment = (item) => {
-        console.log('take to equipment clicked, item:', item)
         socket().emit('addToEquipment', ({token, item}))
         socket().on('updatedEquipment', (data) => {
-            console.log('data from updated equipment', data)
             dispatch(setFightEquipment(data))
         })
 

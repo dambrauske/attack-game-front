@@ -17,7 +17,6 @@ const GeneratedItem = ({item}) => {
     }
 
     const takeToInventory = (item) => {
-        console.log('take to inventory clicked')
         dispatch(removeFromGeneratedItems(item))
         socket().emit('addToInventory', ({token, item}))
         socket().on('updatedInventory', (data) => {

@@ -15,23 +15,16 @@ const GamePage = () => {
 
     useEffect(() => {
         socket().on('attackData', (data) => {
-            console.log('ATTACK DATA:')
-            console.log(data)
             dispatch(setPlayer1(data.player1))
             dispatch(setPlayer2(data.player2))
 
-            console.log('DATATYPE', typeof data.player1.hp)
-
             if (data.player1.hp <= 0) {
-                console.log('data.player1.hp <= 0')
                 dispatch(setLost(data.player1.username))
                 dispatch(setWon(data.player2.username))
                 socket().emit('userWon', data.player2)
             }
 
             if (data.player2.hp <= 0) {
-                console.log('data.player2.hp <= 0')
-
                 dispatch(setLost(data.player2.username))
                 dispatch(setWon(data.player1.username))
                 socket().emit('userWon', data.player1)
@@ -39,15 +32,11 @@ const GamePage = () => {
         })
 
         socket().on('potionUsed', (data) => {
-            console.log('potionUsed DATA:')
-            console.log(data)
             dispatch(setPlayer1(data.player1))
             dispatch(setPlayer2(data.player2))
         })
 
         socket().on('winnerMoney', (money) => {
-            console.log('winnerMoney DATA:')
-            console.log(money)
             dispatch(setMoney(money))
         })
 

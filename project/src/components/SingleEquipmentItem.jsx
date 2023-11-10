@@ -17,9 +17,6 @@ const SingleEquipmentItem = ({item}) => {
 
     const removeFromEquipment = (itemId) => {
         socket().emit('deleteFromEquipment', ({token, itemId}))
-        socket().on('updatedEquipment', (data) => {
-            console.log('updatedEquipment', data)
-        })
     }
 
     return (

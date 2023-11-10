@@ -8,8 +8,10 @@ const EquipmentItemInFight = ({item}) => {
     const player2 = useSelector(state => state.game.player2)
     const currentUsername = useSelector(state => state.user.username)
     const currentUserId = useSelector(state => state.user.userId)
+    const winner = useSelector(state => state.game.won)
     const usePotion = (currentUsername, player1, player2) => {
-        console.log('usePotion clicked', item)
+        if (winner) return
+
         if (item.name === "potion") {
             socket().emit('usePotion', {currentUsername, player1, player2})
         }

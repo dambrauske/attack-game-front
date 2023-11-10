@@ -20,8 +20,6 @@ const AllUsers = () => {
 
     }, [])
 
-    console.log('connected users in AllUsers', users)
-
 
     return (
         <div className="flex flex-col gap-2 p-2">

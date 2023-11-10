@@ -27,7 +27,7 @@ const Modal = ({acceptGame, declineGame}) => {
                         className={"bg-purple-800 px-2 py-1 rounded w-20 self-center hover:bg-purple-600 text-white"}>Accept
                     </button>
                     <button
-                        onClick={declineGame}
+                        onClick={() => declineGame(sender)}
                         className={"bg-slate-800 px-2 py-1 rounded w-20 self-center hover:bg-slate-600 text-white"}>Decline
                     </button>
                 </div>

@@ -13,14 +13,12 @@ const GameInfo = () => {
     const playerTurn = player1.attackTurn
 
     const attack = (player1, player2) => {
-        console.log('attack clicked')
         if (playerTurn === userUsername) {
             socket().emit('sendAttackData', player1, player2)
         }
     }
 
     const backToHome = () => {
-        socket().emit('leaveRoom', 'gameRoom')
         navigate('/home')
     }
 

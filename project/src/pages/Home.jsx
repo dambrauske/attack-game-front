@@ -32,12 +32,12 @@ const Home = () => {
             dispatch(setPlayer2(data.player2))
         })
 
-        socket().on('declinedGameRequest', (message) => {
-            alert(message)
-        })
-
         socket().on('loggedInUsers', (loggedInUsers) => {
             dispatch(setLoggedInUsers(loggedInUsers))
+        })
+
+        socket().on('declinedGameRequest', (message) => {
+            alert(message)
         })
 
         socket().on('gameRequest', (data) => {
